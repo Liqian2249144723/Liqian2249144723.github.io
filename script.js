@@ -1,40 +1,55 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.tab');
-    const sections = document.querySelectorAll('.works-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const buyButtons = document.querySelectorAll('.btn-buy');
+    const paymentCards = document.querySelectorAll('.payment-card');
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            tabs.forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
             
-            const tabName = this.dataset.tab;
-            sections.forEach(section => {
-                section.style.display = 'none';
-            });
-            
-            const activeSection = document.getElementById(`${tabName}-section`) || document.getElementById('products-section');
-            if (activeSection) {
-                activeSection.style.display = 'block';
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
             }
         });
     });
 
-    const buyButtons = document.querySelectorAll('.btn-buy');
-    buyButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const productName = this.dataset.product;
-            alert(`您选择购买：${productName}\n\n请通过以下方式联系购买：\n微信：原形工坊\n或访问闲鱼店铺购买`);
+    buyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const productName = this.getAttribute('data-product');
+            alert(`已选择：${productName}\n\n请通过以下方式购买：\n1. 点击页面底部的闲鱼链接\n2. 添加微信：原形工坊`);
         });
     });
 
-    const header = document.querySelector('.header');
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 50) {
-            header.style.background = 'rgba(15, 15, 15, 0.95)';
-            header.style.backdropFilter = 'blur(10px)';
-        } else {
-            header.style.background = 'linear-gradient(135deg, #000 0%, #1a1a1a 100%)';
-            header.style.backdropFilter = 'none';
+    paymentCards.forEach(card => {
+        if (!card.hasAttribute('href')) {
+            card.addEventListener('click', function() {
+                alert('请添加微信：原形工坊\n进行支付购买');
+            });
         }
+    });
+
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section');
+        const scrollPosition = window.scrollY + 150;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${sectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
     });
 });
