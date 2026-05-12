@@ -717,6 +717,52 @@ body {
     font-size: 14px;
 }
 
+.donation-section {
+    margin-top: 40px;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(255, 106, 106, 0.1), rgba(255, 165, 2, 0.1));
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 106, 106, 0.2);
+}
+
+.donation-section h2 {
+    font-size: 24px;
+    color: #ff6b6b;
+    margin-bottom: 10px;
+}
+
+.donation-desc {
+    color: #888;
+    margin-bottom: 30px;
+}
+
+.donation-qr {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.donation-item {
+    text-align: center;
+}
+
+.qr-code img {
+    width: 200px;
+    height: 200px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.donation-item p {
+    margin-top: 15px;
+    color: #ccc;
+    font-weight: 500;
+}
+
 .footer {
     padding: 60px 20px;
     background: rgba(15, 15, 26, 0.95);
