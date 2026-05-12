@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const productCards = document.querySelectorAll('.product-card');
 
+    console.log('网站加载完成！');
+    console.log('找到', tabBtns.length, '个分类按钮');
+    console.log('找到', productCards.length, '个商品');
+
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -28,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
     buyButtons.forEach(button => {
         button.addEventListener('click', function() {
             const productName = this.getAttribute('data-product');
-            alert(`已选择：${productName}\n\n请通过以下方式购买：\n1. 点击闲鱼链接购买\n2. 添加微信：原形工坊\n3. 电话联系：16627878630`);
+            alert('已选择：' + productName + '\n\n请通过以下方式购买：\n1. 点击闲鱼链接购买\n2. 添加微信：原形工坊\n3. 电话联系：16627878630');
         });
     });
 
@@ -43,19 +47,23 @@ document.addEventListener('DOMContentLoaded', function() {
     tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const tab = this.getAttribute('data-tab');
+            console.log('点击了分类：', tab);
 
             tabBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
+            let showCount = 0;
             productCards.forEach(card => {
                 const category = card.getAttribute('data-category');
 
                 if (tab === 'all' || tab === category) {
                     card.classList.remove('hidden');
+                    showCount++;
                 } else {
                     card.classList.add('hidden');
                 }
             });
+            console.log('显示', showCount, '个商品');
         });
     });
 });
