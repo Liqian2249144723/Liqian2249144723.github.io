@@ -580,6 +580,143 @@ body {
     color: #00d9ff;
 }
 
+.contact-section {
+    margin-top: 40px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+}
+
+.contact-section h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.wechat-section {
+    text-align: center;
+}
+
+.wechat-section h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.wechat-qr-container img {
+    width: 300px;
+    height: 300px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.wechat-info {
+    margin-top: 20px;
+}
+
+.wechat-info p {
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.contact-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.contact-info-section h3 {
+    font-size: 18px;
+    color: #00d9ff;
+}
+
+.purchase-options {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.purchase-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 25px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 30px;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.purchase-btn:hover {
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    color: #000;
+    transform: scale(1.05);
+}
+
+.purchase-btn i {
+    font-size: 20px;
+}
+
+.quick-links {
+    padding: 80px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.quick-links h2 {
+    font-size: 28px;
+    margin-bottom: 40px;
+}
+
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.link-card {
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    text-decoration: none;
+    color: #fff;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.link-card:hover {
+    background: rgba(0, 217, 255, 0.1);
+    border-color: rgba(0, 217, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.link-card i {
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: #00d9ff;
+}
+
+.link-card span {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.link-card p {
+    color: #888;
+    font-size: 14px;
+}
+
 .footer {
     padding: 60px 20px;
     background: rgba(15, 15, 26, 0.95);
