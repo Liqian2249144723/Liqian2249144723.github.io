@@ -111,4 +111,12 @@ document.addEventListener('DOMContentLoaded', function() {
         img.style.opacity = '0';
         img.style.transition = 'opacity 0.3s ease';
     });
+
+    const buyButtons = document.querySelectorAll('.btn-buy');
+    buyButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const productName = this.dataset.product;
+            alert(`您选择购买：${productName}\n\n请通过以下方式联系购买：\n微信：STM32_Shop\n或访问闲鱼店铺购买`);
+        });
+    });
 });

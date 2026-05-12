@@ -524,6 +524,275 @@ body {
     }
 }
 
+.shop-header, .payment-header {
+    margin-bottom: 24px;
+}
+
+.shop-header h2, .payment-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.shop-header p, .payment-header p {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.product-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.product-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: linear-gradient(135deg, #ff2c55 0%, #ff0040 100%);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.product-info {
+    padding: 16px;
+}
+
+.product-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.product-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.product-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff2c55;
+}
+
+.btn-buy {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.payment-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.payment-card:hover {
+    transform: translateY(-4px);
+}
+
+.payment-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 32px;
+}
+
+.payment-icon.wechat {
+    background: linear-gradient(135deg, #07c160 0%, #10b981 100%);
+    color: #fff;
+}
+
+.payment-icon.xianyu {
+    background: linear-gradient(135deg, #ff6a00 0%, #ff8c00 100%);
+    color: #fff;
+}
+
+.payment-icon.phone {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+}
+
+.payment-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.payment-card p {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 16px;
+}
+
+.qrcode-container {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.qrcode-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.payment-note {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.btn-xianyu {
+    margin-top: 8px;
+}
+
+.payment-tips {
+    margin-top: 32px;
+    background: rgba(255, 44, 85, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid #ff2c55;
+}
+
+.payment-tips h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.payment-tips ul {
+    list-style: none;
+    padding: 0;
+}
+
+.payment-tips li {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+.payment-tips li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #07c160;
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        padding: 0 12px;
+    }
+    
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+    }
+    
+    .avatar {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .username {
+        font-size: 24px;
+    }
+    
+    .stats-row {
+        gap: 24px;
+    }
+    
+    .profile-tabs {
+        gap: 24px;
+    }
+    
+    .works-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .btn-outline {
+        padding: 6px 16px;
+        font-size: 12px;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .payment-methods {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 480px) {
     .works-grid {
         grid-template-columns: 1fr;
