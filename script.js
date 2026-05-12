@@ -4,18 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const paymentCards = document.querySelectorAll('.payment-card');
     const wechatPayment = document.querySelector('.wechat-payment');
     const phoneCard = document.querySelector('.phone-contact');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const productCards = document.querySelectorAll('.product-card');
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            
+
             if (href.startsWith('#')) {
                 e.preventDefault();
                 const targetSection = document.querySelector(href);
-                
+
                 if (targetSection) {
                     targetSection.scrollIntoView({ behavior: 'smooth' });
-                    
+
                     navLinks.forEach(l => l.classList.remove('active'));
                     this.classList.add('active');
                 }
@@ -36,5 +38,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     phoneCard?.addEventListener('click', function() {
         alert('联系电话：16627878630\n工作时间：9:00-18:00（每周6天）');
+    });
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tab = this.getAttribute('data-tab');
+
+            tabBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            productCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+
+                if (tab === 'all' || tab === category) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
     });
 });

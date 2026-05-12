@@ -931,3 +931,45 @@ body {
         align-items: center;
     }
 }
+.product-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 12px 30px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #ccc;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    border-color: rgba(0, 217, 255, 0.5);
+    color: #00d9ff;
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    color: #000;
+    border-color: transparent;
+}
+
+.product-card.hidden {
+    display: none;
+}
+
+.product-badge.code {
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+}
+
+.product-badge.kit {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
