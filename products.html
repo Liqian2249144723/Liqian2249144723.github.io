@@ -43,25 +43,32 @@
             <h1>STM32 商品专区</h1>
             <p>点击商品查看详情并购买</p>
         </div>
+
+        <div class="product-tabs">
+            <button class="tab-btn active" data-tab="all">全部商品</button>
+            <button class="tab-btn" data-tab="code">纯代码文件</button>
+            <button class="tab-btn" data-tab="kit">代码+材料包</button>
+        </div>
         
         <div class="products-grid">
-            <div class="product-card">
+            <div class="product-card" data-category="kit">
                 <div class="product-image">
                     <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20microcontroller%20development%20board%20kit%20electronic%20components%20professional&image_size=square" alt="STM32入门套件">
-                    <div class="product-badge hot">热卖</div>
+                    <div class="product-badge kit">材料包</div>
                 </div>
                 <div class="product-info">
                     <h3>STM32F103入门套件</h3>
-                    <p>包含STM32F103开发板、USB线、杜邦线等</p>
+                    <p>包含STM32F103开发板、USB线、杜邦线等材料</p>
                     <div class="product-price">¥128</div>
                     <button class="btn btn-primary btn-buy" data-product="STM32F103入门套件 - ¥128">立即购买</button>
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" data-category="kit">
                 <div class="product-image">
                     <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20robot%20car%20kit%20with%20motor%20driver%20electronic%20parts%20professional&image_size=square" alt="STM32麦克纳姆轮套件">
-                    <div class="product-badge new">新品</div>
+                    <div class="product-badge kit">材料包</div>
+                    <div class="product-badge hot">热卖</div>
                 </div>
                 <div class="product-info">
                     <h3>STM32麦克纳姆轮小车套件</h3>
@@ -71,9 +78,10 @@
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" data-category="kit">
                 <div class="product-image">
                     <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=MPU6050%20accelerometer%20gyroscope%20sensor%20module%20circuit%20professional&image_size=square" alt="MPU6050传感器套件">
+                    <div class="product-badge kit">材料包</div>
                 </div>
                 <div class="product-info">
                     <h3>MPU6050传感器套件</h3>
@@ -83,9 +91,10 @@
                 </div>
             </div>
 
-            <div class="product-card">
+            <div class="product-card" data-category="kit">
                 <div class="product-image">
                     <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=WS2812%20RGB%20LED%20strip%20light%20electronic%20project%20colorful&image_size=square" alt="WS2812灯带套件">
+                    <div class="product-badge kit">材料包</div>
                 </div>
                 <div class="product-info">
                     <h3>WS2812 RGB灯带套件</h3>
@@ -95,21 +104,10 @@
                 </div>
             </div>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ESP32%20WiFi%20bluetooth%20module%20development%20board%20professional&image_size=square" alt="ESP32开发板">
-                </div>
-                <div class="product-info">
-                    <h3>ESP32 WiFi开发板</h3>
-                    <p>支持WiFi和蓝牙，物联网开发首选</p>
-                    <div class="product-price">¥58</div>
-                    <button class="btn btn-primary btn-buy" data-product="ESP32 WiFi开发板 - ¥58">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card">
+            <div class="product-card" data-category="code">
                 <div class="product-image">
                     <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=software%20code%20programming%20STM32%20project%20files%20documentation%20dark&image_size=square" alt="STM32源码合集">
+                    <div class="product-badge code">纯代码</div>
                     <div class="product-badge value">超值</div>
                 </div>
                 <div class="product-info">
@@ -117,6 +115,19 @@
                     <p>包含所有视频配套源码，持续更新</p>
                     <div class="product-price">¥99</div>
                     <button class="btn btn-primary btn-buy" data-product="STM32源码合集 - ¥99">立即购买</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="code">
+                <div class="product-image">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=embedded%20RTOS%20FreeRTOS%20code%20architecture%20diagram%20professional&image_size=square" alt="FreeRTOS学习资料">
+                    <div class="product-badge code">纯代码</div>
+                </div>
+                <div class="product-info">
+                    <h3>FreeRTOS学习资料</h3>
+                    <p>FreeRTOS源码+教程文档+实验例程</p>
+                    <div class="product-price">¥79</div>
+                    <button class="btn btn-primary btn-buy" data-product="FreeRTOS学习资料 - ¥79">立即购买</button>
                 </div>
             </div>
         </div>
@@ -137,7 +148,7 @@
                     <span>电话联系</span>
                 </a>
             </div>
-            <p class="contact-link">更多联系方式和打赏支持，请访问 <a href="contact.html">联系我们</a></p>
+            <p class="contact-link">更多联系方式，请访问 <a href="contact.html">联系我们</a></p>
         </div>
     </section>
 
