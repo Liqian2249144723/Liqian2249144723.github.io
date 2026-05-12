@@ -253,6 +253,16 @@ body {
     transform: scale(1.05);
 }
 
+.social-btn.github {
+    background: linear-gradient(135deg, #333 0%, #444 100%);
+    color: #fff;
+}
+
+.social-btn.github:hover {
+    background: #24292e;
+    transform: scale(1.05);
+}
+
 .profile-tabs {
     display: flex;
     gap: 48px;
