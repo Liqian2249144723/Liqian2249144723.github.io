@@ -206,6 +206,53 @@ body {
     padding: 8px 12px;
 }
 
+.social-links-header {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.social-btn.tiktok {
+    background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.social-btn.tiktok:hover {
+    background: #000;
+    transform: scale(1.05);
+}
+
+.social-btn.bilibili {
+    background: linear-gradient(135deg, #00a1d6 0%, #00b5e5 100%);
+    color: #fff;
+}
+
+.social-btn.bilibili:hover {
+    transform: scale(1.05);
+}
+
+.social-btn.xianyu {
+    background: linear-gradient(135deg, #ff6a00 0%, #ff8c00 100%);
+    color: #fff;
+}
+
+.social-btn.xianyu:hover {
+    transform: scale(1.05);
+}
+
 .profile-tabs {
     display: flex;
     gap: 48px;
@@ -745,6 +792,65 @@ body {
     position: absolute;
     left: 0;
     color: #07c160;
+}
+
+.about-header {
+    margin-bottom: 24px;
+}
+
+.about-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.about-content {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.about-text {
+    margin-bottom: 24px;
+}
+
+.about-text p {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-stat {
+    text-align: center;
+}
+
+.stat-num {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+    color: #ff2c55;
+    margin-bottom: 8px;
+}
+
+.stat-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@media (max-width: 768px) {
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
 }
 
 @media (max-width: 768px) {

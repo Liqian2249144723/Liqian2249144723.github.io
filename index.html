@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>原形工坊 - 抖音个人主页</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>原形工坊 - STM32技术分享</title>
+    <link rel="stylesheet" href="styles.css?v=2.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -12,11 +12,7 @@
         <div class="header-content">
             <div class="logo">
                 <i class="fab fa-tiktok"></i>
-                <span>抖音</span>
-            </div>
-            <div class="header-actions">
-                <button class="btn btn-primary">关注</button>
-                <button class="btn btn-secondary">发消息</button>
+                <span>原形工坊</span>
             </div>
         </div>
     </header>
@@ -37,41 +33,29 @@
                         <h1 class="username">原形工坊</h1>
                         <span class="user-id">@freslate</span>
                     </div>
-                    <div class="stats-row">
-                        <div class="stat-item">
-                            <span class="stat-value">56</span>
-                            <span class="stat-label">关注</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">331</span>
-                            <span class="stat-label">粉丝</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value">3.9k</span>
-                            <span class="stat-label">获赞</span>
-                        </div>
-                    </div>
                     <div class="bio">
                         <p>专注于嵌入式开发、单片机技术分享</p>
                         <p>STM32 | Linux | RTOS | 电子DIY</p>
                     </div>
-                    <div class="profile-actions">
-                        <button class="btn btn-outline btn-follow">+ 关注</button>
-                        <button class="btn btn-outline btn-message">发消息</button>
-                        <button class="btn btn-outline btn-share">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
+                    <div class="social-links-header">
+                        <a href="https://v.douyin.com/iSfM7jX6xY7/" target="_blank" class="social-btn tiktok">
+                            <i class="fab fa-tiktok"></i>
+                            <span>抖音</span>
+                        </a>
+                        <a href="https://space.bilibili.com/123456789" target="_blank" class="social-btn bilibili">
+                            <i class="fab fa-bilibili"></i>
+                            <span>B站</span>
+                        </a>
+                        <a href="https://2.taobao.com/item.htm?id=xxx" target="_blank" class="social-btn xianyu">
+                            <i class="fas fa-shopping-bag"></i>
+                            <span>闲鱼</span>
+                        </a>
                     </div>
                 </div>
             </div>
 
             <div class="profile-tabs">
-                <div class="tab active" data-tab="works">
-                    <i class="fas fa-play-circle"></i>
-                    <span>作品</span>
-                    <span class="tab-count">14</span>
-                </div>
-                <div class="tab" data-tab="shop">
+                <div class="tab active" data-tab="products">
                     <i class="fas fa-shopping-cart"></i>
                     <span>商品</span>
                     <span class="tab-count">6</span>
@@ -80,194 +64,14 @@
                     <i class="fas fa-qrcode"></i>
                     <span>购买方式</span>
                 </div>
-            </div>
-        </div>
-
-        <div class="works-section" id="works-section">
-            <div class="works-grid">
-                <div class="work-item" data-id="1">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20microcontroller%20robot%20car%20with%20LED%20lights%20electronic%20project&image_size=landscape_16_9" alt="stm32 麦克纳姆轮">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">4.3万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">stm32 麦克纳姆轮</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="2">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=freertos%20microcontroller%20development%20board%20with%20remote%20control&image_size=landscape_16_9" alt="freertos Nrfwatch">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">12.7万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">freertos Nrfwatch</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="3">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=MPU6050%20sensor%20data%20visualization%20on%20computer%20screen%20graph&image_size=landscape_16_9" alt="MPU6050上位机显示">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">1.3万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">MPU6050上位机显示</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="4">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20and%20Qt%20interface%20development%20on%20computer%20screen&image_size=landscape_16_9" alt="stm32和qt基础项目">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">8.4万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">stm32和qt基础项目</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="5">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Linux%20terminal%20with%20VGL%20practice%20code%20development&image_size=landscape_16_9" alt="linux下VGL练习">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">2.8万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">linux下VGL练习</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="6">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=AI%20voice%20assistant%20smart%20speaker%20GPT%20integration%20project&image_size=landscape_16_9" alt="小度智能音箱gptsoivts">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">470</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">小度智能音箱gptsoivts</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="7">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Linux%20TCP%20network%20programming%20demo%20code%20on%20screen&image_size=landscape_16_9" alt="Linux TCP demo">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">3.2万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">Linux TCP demo</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="8">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20development%20board%20with%20breadboard%20wiring%20electronic%20circuit&image_size=landscape_16_9" alt="stm32基础模块实验">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">5.6万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">stm32基础模块实验</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="9">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=electronic%20circuit%20breadboard%20with%20LED%20lights%20and%20wires&image_size=landscape_16_9" alt="电路基础实验">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">2.1万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">电路基础实验</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="10">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20with%20WS2812%20RGB%20LED%20strip%20lighting%20project&image_size=landscape_16_9" alt="stm32驱动ws2812b灯带">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">6.8万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">stm32驱动ws2812b灯带</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="11">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20with%20ESP32%20communication%20project%20wireless%20IoT&image_size=landscape_16_9" alt="stm32联合esp32点灯">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">4.5万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">stm32联合esp32点灯</span>
-                    </div>
-                </div>
-
-                <div class="work-item" data-id="12">
-                    <div class="work-thumbnail">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=PCB%20circuit%20board%20design%20and%20soldering%20workshop&image_size=landscape_16_9" alt="PCB基础焊接">
-                        <div class="work-overlay">
-                            <div class="play-btn">
-                                <i class="fas fa-play"></i>
-                            </div>
-                            <span class="work-views">3.9万</span>
-                        </div>
-                    </div>
-                    <div class="work-info">
-                        <span class="work-title">PCB基础焊接</span>
-                    </div>
+                <div class="tab" data-tab="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>关于我</span>
                 </div>
             </div>
         </div>
 
-        <div class="works-section" id="shop-section" style="display: none;">
+        <div class="works-section" id="products-section">
             <div class="shop-header">
                 <h2>STM32 商品专区</h2>
                 <p>点击商品查看详情并购买</p>
@@ -368,31 +172,31 @@
                 <p>选择您方便的购买渠道</p>
             </div>
             <div class="payment-methods">
-                <div class="payment-card">
+                <div class="payment-card wechat-card">
                     <div class="payment-icon wechat">
                         <i class="fab fa-weixin"></i>
                     </div>
                     <h3>微信支付</h3>
                     <p>扫描下方二维码添加微信</p>
                     <div class="qrcode-container">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=WeChat%20QR%20code%20payment%20green%20simple%20design&image_size=square" alt="微信收款码">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=WeChat%20QR%20payment%20code%20green%20background%20professional&image_size=square" alt="微信收款码">
                     </div>
-                    <p class="payment-note">微信号：STM32_Shop</p>
+                    <p class="payment-note">微信名：原形工坊</p>
                 </div>
 
-                <div class="payment-card">
+                <div class="payment-card xianyu-card">
                     <div class="payment-icon xianyu">
                         <i class="fas fa-shopping-bag"></i>
                     </div>
                     <h3>闲鱼店铺</h3>
-                    <p>点击跳转闲鱼店铺</p>
+                    <p>点击下方链接访问闲鱼店铺</p>
                     <div class="qrcode-container">
-                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Xianyu%20shopping%20platform%20QR%20code%20orange%20design&image_size=square" alt="闲鱼二维码">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Xianyu%20shopping%20QR%20code%20orange%20color%20design&image_size=square" alt="闲鱼二维码">
                     </div>
-                    <a href="#" class="btn btn-outline btn-xianyu">访问闲鱼店铺</a>
+                    <a href="https://2.taobao.com/item.htm?id=xxx" target="_blank" class="btn btn-outline btn-xianyu">访问闲鱼店铺</a>
                 </div>
 
-                <div class="payment-card">
+                <div class="payment-card contact-card">
                     <div class="payment-icon phone">
                         <i class="fas fa-phone"></i>
                     </div>
@@ -415,48 +219,52 @@
                 </ul>
             </div>
         </div>
+
+        <div class="works-section" id="about-section" style="display: none;">
+            <div class="about-header">
+                <h2>关于我</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>大家好，我是「原形工坊」，专注于嵌入式开发和单片机技术分享。</p>
+                    <p>从2020年开始，我在抖音上分享STM32、Linux、RTOS等技术内容，希望能帮助更多电子爱好者入门嵌入式开发。</p>
+                    <p>如果你对单片机开发感兴趣，欢迎关注我的社交媒体账号，一起学习交流！</p>
+                </div>
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <span class="stat-num">3年</span>
+                        <span class="stat-text">技术分享经验</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="stat-num">100+</span>
+                        <span class="stat-text">技术视频</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="stat-num">5000+</span>
+                        <span class="stat-text">学员受益</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <footer class="footer">
         <div class="footer-content">
             <p>关注我，一起学习嵌入式开发！</p>
             <div class="social-links">
-                <a href="#" class="social-link">
+                <a href="https://v.douyin.com/iSfM7jX6xY7/" target="_blank" class="social-link" title="抖音">
                     <i class="fab fa-tiktok"></i>
                 </a>
-                <a href="#" class="social-link">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="social-link">
+                <a href="https://space.bilibili.com/123456789" target="_blank" class="social-link" title="B站">
                     <i class="fab fa-bilibili"></i>
+                </a>
+                <a href="https://2.taobao.com/item.htm?id=xxx" target="_blank" class="social-link" title="闲鱼">
+                    <i class="fas fa-shopping-bag"></i>
                 </a>
             </div>
         </div>
     </footer>
 
-    <div class="modal" id="video-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="modal-title">视频播放</span>
-                <button class="modal-close" id="modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="video-container">
-                    <img id="modal-image" src="" alt="视频封面">
-                    <div class="video-play-overlay">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                </div>
-                <div class="video-info">
-                    <h3 id="video-title"></h3>
-                    <p id="video-views"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    <script src="script.js?v=2.0"></script>
 </body>
 </html>
