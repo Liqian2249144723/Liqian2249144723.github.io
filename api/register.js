@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -19,4 +19,4 @@ export default async function handler(req, res) {
     message: '注册成功！请使用 admin / admin123 登录（演示版本）',
     user: { id: Date.now(), username, role: 'user' }
   });
-}
+};

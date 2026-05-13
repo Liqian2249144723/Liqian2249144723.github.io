@@ -1,4 +1,4 @@
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -20,4 +20,4 @@ export default async function handler(req, res) {
     { id: 'kit', name: '学习套件', icon: 'fa-box-open' },
     { id: 'actuator', name: '执行器', icon: 'fa-cog' }
   ]);
-}
+};
