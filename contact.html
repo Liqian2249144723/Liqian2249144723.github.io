@@ -72,7 +72,33 @@
             </div>
         </div>
 
-        <div class="donation-section">
+        <div class="contact-form-card">
+                <h3>需求咨询</h3>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="您的姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" id="phone" placeholder="联系电话" required>
+                    </div>
+                    <div class="form-group">
+                        <select id="service" required>
+                            <option value="">选择咨询服务</option>
+                            <option value="STM32程序开发">STM32程序开发</option>
+                            <option value="PCB设计">PCB设计</option>
+                            <option value="实物调试">实物调试</option>
+                            <option value="视频发货">视频发货</option>
+                            <option value="其他服务">其他服务</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="message" placeholder="请描述您的需求..." rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">提交咨询</button>
+                </form>
+            </div>
+
+            <div class="donation-section">
             <h3>打赏支持</h3>
             <p class="donation-desc">觉得我的内容对你有帮助，可以小小打赏一下鼓励一下~</p>
             <div class="donation-qr">
