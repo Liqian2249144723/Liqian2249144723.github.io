@@ -33,14 +33,14 @@ document.addEventListener('DOMContentLoaded', function() {
     buyButtons.forEach(button => {
         button.addEventListener('click', function() {
             const productName = this.getAttribute('data-product');
-            alert('已选择：' + productName + '\n\n请通过以下方式购买：\n1. 点击闲鱼链接购买\n2. 添加微信：原形工坊\n3. 电话联系：16627878630');
+            alert('已选择：' + productName + '\n\n请通过以下方式购买：\n1. 点击闲鱼链接购买\n2. 添加微信：li28430132\n3. 电话联系：16627878630');
         });
     });
 
     contactButtons.forEach(button => {
         button.addEventListener('click', function() {
             const serviceName = this.getAttribute('data-service');
-            alert('您想咨询「' + serviceName + '」服务\n\n请通过以下方式联系我：\n📞 电话：16627878630\n💬 QQ：2249144723\n📱 微信：原形工坊\n\n工作时间：9:00-18:00（每周6天）');
+            alert('您想咨询「' + serviceName + '」服务\n\n请通过以下方式联系我：\n📞 电话：16627878630\n💬 QQ：2249144723\n📱 微信：li28430132\n\n工作时间：9:00-18:00（周一到周六）');
         });
     });
 
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     phoneCard?.addEventListener('click', function() {
-        alert('联系电话：16627878630\n工作时间：9:00-18:00（每周6天）');
+        alert('联系电话：16627878630\n工作时间：9:00-18:00（周一到周六）');
     });
 
     tabBtns.forEach(btn => {
