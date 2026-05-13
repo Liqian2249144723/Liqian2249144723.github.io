@@ -236,7 +236,11 @@ if (!fs.existsSync(ordersFilePath)) {
     fs.writeFileSync(ordersFilePath, JSON.stringify([], null, 2));
 }
 
-let loggedInUsers = {};
+const tokensFilePath = path.join(dataDir, 'tokens.json');
+
+if (!fs.existsSync(tokensFilePath)) {
+    fs.writeFileSync(tokensFilePath, JSON.stringify([], null, 2));
+}
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
@@ -245,7 +249,10 @@ app.post('/api/login', (req, res) => {
     
     if (user) {
         const token = generateToken();
-        loggedInUsers[token] = user;
+        const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+        tokens.push({ token, userId: user.id, createdAt: new Date().toISOString() });
+        fs.writeFileSync(tokensFilePath, JSON.stringify(tokens, null, 2));
+        
         res.json({ 
             success: true, 
             message: '登录成功',
@@ -266,7 +273,17 @@ function checkAdmin(req, res) {
     if (!token) {
         return null;
     }
-    const user = loggedInUsers[token];
+    
+    const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+    const tokenRecord = tokens.find(t => t.token === token);
+    
+    if (!tokenRecord) {
+        return null;
+    }
+    
+    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+    const user = users.find(u => u.id === tokenRecord.userId);
+    
     if (user && user.role === 'admin') {
         return user;
     }

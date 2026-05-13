@@ -621,9 +621,7 @@
                 </div>
                 <div class="qrcode-container" id="qrcodeContainer">
                     <div class="payment-qrcode">
-                        <div class="qrcode-icon">
-                            <i class="fab fa-weixin" id="qrcodeIcon"></i>
-                        </div>
+                        <img src="wechat-qrcode.png" id="qrcodeImage" alt="微信收款码" class="qrcode-img">
                         <p class="qrcode-label" id="qrcodeLabel">微信收款码</p>
                     </div>
                     <div class="payment-details">
@@ -638,7 +636,7 @@
                             <p><i class="fas fa-phone"></i> 电话：<span class="copyable" onclick="copyText('16627878630')">16627878630</span></p>
                         </div>
                     </div>
-                    <p class="qrcode-tip">请添加微信或支付宝好友，转账后点击下方按钮完成购买</p>
+                    <p class="qrcode-tip">请使用微信/支付宝扫描上方二维码付款，付款后点击下方按钮完成购买</p>
                 </div>
                 <button class="confirm-payment-btn" id="confirmPaymentBtn" onclick="confirmPayment()">
                     <i class="fas fa-check"></i> 我已完成付款
@@ -822,17 +820,17 @@
             document.getElementById('wechatBtn').classList.toggle('active', method === 'wechat');
             document.getElementById('alipayBtn').classList.toggle('active', method === 'alipay');
             
-            const qrcodeIcon = document.getElementById('qrcodeIcon');
+            const qrcodeImage = document.getElementById('qrcodeImage');
             const qrcodeLabel = document.getElementById('qrcodeLabel');
             
             if (method === 'wechat') {
-                qrcodeIcon.className = 'fab fa-weixin';
-                qrcodeIcon.style.color = '#25D366';
-                qrcodeLabel.textContent = '微信收款';
+                qrcodeImage.src = 'wechat-qrcode.png';
+                qrcodeImage.alt = '微信收款码';
+                qrcodeLabel.textContent = '微信收款码';
             } else {
-                qrcodeIcon.className = 'fab fa-alipay';
-                qrcodeIcon.style.color = '#1677FF';
-                qrcodeLabel.textContent = '支付宝收款';
+                qrcodeImage.src = 'alipay-qrcode.png';
+                qrcodeImage.alt = '支付宝收款码';
+                qrcodeLabel.textContent = '支付宝收款码';
             }
         }
 

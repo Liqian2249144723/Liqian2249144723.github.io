@@ -269,14 +269,15 @@
         }
 
         .btn-action {
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
             border: none;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s ease;
-            margin-right: 5px;
+            margin-right: 8px;
+            min-width: 90px;
         }
 
         .btn-edit {
@@ -304,6 +305,39 @@
 
         .btn-reply:hover {
             background: rgba(46, 204, 113, 0.3);
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #27ae60, #2ecc71) !important;
+            color: white !important;
+            padding: 12px 24px !important;
+            font-size: 15px !important;
+            border-radius: 12px !important;
+            min-width: 100px !important;
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-cancel {
+            background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
+            color: white !important;
+            padding: 12px 24px !important;
+            font-size: 15px !important;
+            border-radius: 12px !important;
+            min-width: 100px !important;
+        }
+
+        .btn-cancel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .pending-row {
+            background: rgba(255, 165, 2, 0.08);
+            border-left: 4px solid #ffa502;
         }
 
         .modal-overlay {
@@ -1489,10 +1523,27 @@
         });
 
         async function loadOrders() {
+            const keyword = document.getElementById('orderSearch').value;
             const response = await fetch(`${BASE_URL}/api/orders`, {
                 headers: getAuthHeaders()
             });
-            const orders = await response.json();
+            let orders = await response.json();
+
+            if (keyword) {
+                const kw = keyword.toLowerCase();
+                orders = orders.filter(o => 
+                    o.id.toString().includes(kw) || 
+                    o.email.toLowerCase().includes(kw) ||
+                    o.buyerName.toLowerCase().includes(kw) ||
+                    o.productName.toLowerCase().includes(kw)
+                );
+            }
+
+            orders.sort((a, b) => {
+                const statusOrder = { 'pending': 0, 'completed': 1, 'cancelled': 2 };
+                return statusOrder[a.status] - statusOrder[b.status];
+            });
+
             const tbody = document.querySelector('#ordersTable tbody');
             tbody.innerHTML = '';
 
@@ -1501,12 +1552,20 @@
                 return;
             }
 
+            const pendingCount = orders.filter(o => o.status === 'pending').length;
+            if (pendingCount > 0) {
+                document.querySelector('.section-header h2').innerHTML = `订单管理 <span style="background: #ff6b6b; color: white; padding: 2px 8px; border-radius: 10px; font-size: 12px; margin-left: 10px;">${pendingCount} 待确认</span>`;
+            } else {
+                document.querySelector('.section-header h2').textContent = '订单管理';
+            }
+
             orders.forEach(order => {
                 const row = document.createElement('tr');
+                row.classList.add(order.status === 'pending' ? 'pending-row' : '');
                 row.innerHTML = `
                     <td><span style="font-family: monospace; color: #00d9ff;">#${order.id}</span></td>
-                    <td>${order.productName}</td>
-                    <td>¥${order.price}</td>
+                    <td><strong>${order.productName}</strong></td>
+                    <td style="font-size: 16px; font-weight: 600; color: #00ff88;">¥${order.price}</td>
                     <td>${order.buyerName}</td>
                     <td>
                         <div>📧 ${order.email}</div>
@@ -1515,8 +1574,10 @@
                     <td><span class="badge ${getOrderStatusBadge(order.status)}">${getOrderStatusText(order.status)}</span></td>
                     <td>${formatDate(order.createdAt)}</td>
                     <td>
-                        ${order.status === 'pending' ? `<button class="btn-action btn-reply" onclick="confirmOrder(${order.id})">确认付款</button>` : ''}
-                        ${order.status === 'pending' ? `<button class="btn-action btn-delete" onclick="cancelOrder(${order.id})">取消订单</button>` : ''}
+                        ${order.status === 'pending' ? `<button class="btn-action btn-reply btn-confirm" onclick="confirmOrder(${order.id})">✅ 确认付款</button>` : ''}
+                        ${order.status === 'pending' ? `<button class="btn-action btn-delete btn-cancel" onclick="cancelOrder(${order.id})">❌ 取消订单</button>` : ''}
+                        ${order.status === 'completed' ? `<span style="color: #2ecc71; font-size: 12px;">已完成</span>` : ''}
+                        ${order.status === 'cancelled' ? `<span style="color: #ff6b6b; font-size: 12px;">已取消</span>` : ''}
                     </td>
                 `;
                 tbody.appendChild(row);
