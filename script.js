@@ -1,3 +1,5 @@
+const BASE_URL = window.location.protocol === 'file:' ? 'http://localhost:3001' : '';
+
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const buyButtons = document.querySelectorAll('.btn-buy');
@@ -108,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 content: document.getElementById('content').value
             };
 
-            fetch('/api/messages', {
+            fetch(`${BASE_URL}/api/messages`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -135,7 +137,7 @@ function initAPICalls() {
 }
 
 function fetchStats() {
-    fetch('/api/stats')
+    fetch(`${BASE_URL}/api/stats`)
         .then(response => response.json())
         .then(data => {
             const statValues = document.querySelectorAll('.stat-value');
@@ -153,7 +155,7 @@ function fetchStats() {
 }
 
 function fetchProducts() {
-    fetch('/api/products')
+    fetch(`${BASE_URL}/api/products`)
         .then(response => response.json())
         .then(data => {
             console.log('获取商品数据成功:', data);
@@ -165,7 +167,7 @@ function fetchProducts() {
 }
 
 function fetchContact() {
-    fetch('/api/contact')
+    fetch(`${BASE_URL}/api/contact`)
         .then(response => response.json())
         .then(data => {
             console.log('获取联系信息成功:', data);
