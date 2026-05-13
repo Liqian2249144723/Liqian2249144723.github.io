@@ -185,6 +185,16 @@ body {
     background: rgba(0, 217, 255, 0.1);
 }
 
+.btn-secondary {
+    background: linear-gradient(135deg, #00ff88, #00d9ff);
+    color: #000;
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+}
+
 .hero-image img {
     width: 300px;
     height: 300px;
@@ -513,6 +523,191 @@ body {
 
 .payment-card i {
     font-size: 22px;
+}
+
+.payment-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.payment-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.payment-btn.active {
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    border-color: #00d9ff;
+    color: #000;
+}
+
+.qrcode-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.payment-qrcode {
+    margin-bottom: 20px;
+}
+
+.qrcode-icon {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: #25D366;
+}
+
+.qrcode-label {
+    color: #00d9ff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.payment-details {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.payment-amount {
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.payment-amount .label {
+    color: #888;
+}
+
+.payment-amount .amount {
+    color: #00ff88;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.payment-account {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.payment-account p {
+    margin: 10px 0;
+    color: #ccc;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-account i {
+    width: 20px;
+    text-align: center;
+}
+
+.payment-account .copyable {
+    color: #00d9ff;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+}
+
+.payment-account .copyable:hover {
+    color: #00ff88;
+}
+
+.qrcode-tip {
+    color: #888;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.confirm-payment-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.confirm-payment-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+}
+
+.pending-section {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.pending-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pending-icon i {
+    font-size: 36px;
+    color: #000;
+}
+
+.pending-section h4 {
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.pending-section p {
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.order-info {
+    font-size: 14px;
+    color: #00d9ff !important;
+    font-weight: 500;
+}
+
+.order-info span {
+    font-family: 'Courier New', monospace;
+}
+
+.check-status-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: rgba(0, 217, 255, 0.2);
+    border: 1px solid #00d9ff;
+    border-radius: 10px;
+    color: #00d9ff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.check-status-btn:hover {
+    background: rgba(0, 217, 255, 0.3);
 }
 
 .contact-link {

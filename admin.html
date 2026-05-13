@@ -7,68 +7,134 @@
     <link rel="stylesheet" href="styles.css?v=7.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         .admin-container {
             min-height: 100vh;
             display: flex;
+            flex-direction: row !important;
         }
 
-        .admin-sidebar {
-            width: 250px;
-            background: rgba(20, 20, 35, 0.95);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
+        #adminPanel .admin-container aside.admin-sidebar {
+            width: 180px !important;
+            background: rgba(20, 20, 35, 0.98) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 25px 10px !important;
+            position: fixed !important;
+            height: 100vh !important;
+            left: 0 !important;
+            top: 0 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow-y: auto !important;
+            z-index: 1000 !important;
+            float: none !important;
         }
 
-        .admin-sidebar .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #00d9ff;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        #adminPanel .admin-container aside.admin-sidebar .logo {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 8px !important;
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            color: #00d9ff !important;
+            margin-bottom: 25px !important;
+            padding-bottom: 15px !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
         }
 
-        .admin-sidebar .nav-menu {
-            list-style: none;
+        #adminPanel .admin-container aside.admin-sidebar .logo i {
+            font-size: 30px !important;
         }
 
-        .admin-sidebar .nav-item {
-            margin-bottom: 8px;
+        #adminPanel .admin-container aside.admin-sidebar .nav-menu {
+            list-style: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 8px !important;
+            flex-wrap: nowrap !important;
         }
 
-        .admin-sidebar .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
-            border-radius: 10px;
-            color: #ccc;
-            text-decoration: none;
-            font-size: 14px;
-            transition: all 0.3s ease;
+        #adminPanel .admin-container aside.admin-sidebar .nav-item {
+            display: block !important;
+            width: 100% !important;
+            margin-bottom: 0 !important;
         }
 
-        .admin-sidebar .nav-link:hover,
-        .admin-sidebar .nav-link.active {
-            background: rgba(0, 217, 255, 0.2);
-            color: #00d9ff;
+        #adminPanel .admin-container aside.admin-sidebar .nav-link {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 5px !important;
+            padding: 15px 10px !important;
+            border-radius: 10px !important;
+            color: #888 !important;
+            text-decoration: none !important;
+            font-size: 11px !important;
+            transition: all 0.3s ease !important;
+            background: transparent !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+            float: none !important;
         }
 
-        .admin-sidebar .nav-link i {
-            width: 20px;
+        #adminPanel .admin-container aside.admin-sidebar .nav-link:hover,
+        #adminPanel .admin-container aside.admin-sidebar .nav-link.active {
+            background: rgba(0, 217, 255, 0.15) !important;
+            color: #00d9ff !important;
         }
 
-        .admin-main {
-            flex: 1;
-            margin-left: 250px;
-            padding: 30px;
+        #adminPanel .admin-container aside.admin-sidebar .nav-link i {
+            font-size: 22px !important;
+            line-height: 1 !important;
+        }
+
+        #adminPanel .admin-container aside.admin-sidebar .logout-section {
+            margin-top: auto !important;
+            padding-top: 15px !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #adminPanel .admin-container aside.admin-sidebar .btn-sidebar-logout {
+            width: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            gap: 5px !important;
+            padding: 15px 10px !important;
+            border-radius: 10px !important;
+            background: rgba(255, 106, 106, 0.15) !important;
+            color: #ff6b6b !important;
+            border: 1px solid rgba(255, 106, 106, 0.2) !important;
+            cursor: pointer !important;
+            font-size: 11px !important;
+            transition: all 0.3s ease !important;
+            float: none !important;
+        }
+
+        #adminPanel .admin-container aside.admin-sidebar .btn-sidebar-logout:hover {
+            background: rgba(255, 106, 106, 0.25) !important;
+        }
+
+        #adminPanel .admin-container aside.admin-sidebar .btn-sidebar-logout i {
+            font-size: 20px !important;
+        }
+
+        #adminPanel .admin-container main.admin-main {
+            flex: 1 !important;
+            margin-left: 180px !important;
+            padding: 25px !important;
+            min-height: 100vh !important;
+            box-sizing: border-box !important;
         }
 
         .admin-header {
@@ -247,11 +313,13 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(5px);
             justify-content: center;
-            align-items: center;
-            z-index: 1000;
+            align-items: flex-start;
+            z-index: 2000;
+            padding: 20px;
+            overflow-y: auto;
         }
 
         .modal-overlay.active {
@@ -261,17 +329,27 @@
         .modal {
             background: #1a1a2e;
             border-radius: 16px;
-            padding: 30px;
+            padding: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 380px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            max-height: calc(100vh - 60px);
+            overflow-y: auto;
+            position: relative;
         }
 
         .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            background: #1a1a2e;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
         }
 
         .modal-header h3 {
@@ -330,7 +408,8 @@
 
         .form-group textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 60px;
+            max-height: 120px;
         }
 
         .form-row {
@@ -569,7 +648,26 @@
                             <span>留言管理</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#digital" class="nav-link" data-page="digital">
+                            <i class="fas fa-file-code"></i>
+                            <span>数字资料</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#orders" class="nav-link" data-page="orders">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>订单管理</span>
+                        </a>
+                    </li>
                 </ul>
+                
+                <div class="logout-section">
+                    <button class="btn-sidebar-logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>退出登录</span>
+                    </button>
+                </div>
             </aside>
 
             <main class="admin-main">
@@ -577,7 +675,10 @@
                     <h1 id="pageTitle">数据概览</h1>
                     <div class="user-info">
                         <span>欢迎, <span id="currentUser">admin</span></span>
-                        <button class="btn-logout" onclick="logout()">退出登录</button>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            退出登录
+                        </button>
                     </div>
                 </header>
 
@@ -661,6 +762,49 @@
                         <tbody></tbody>
                     </table>
                 </div>
+
+                <div id="digitalPage" style="display: none;">
+                    <input type="text" class="search-box" id="digitalSearch" placeholder="搜索数字资料...">
+                    <div class="section-header">
+                        <h2>数字资料管理</h2>
+                        <button class="btn-add" onclick="showAddDigitalModal()">添加资料</button>
+                    </div>
+                    <table class="table" id="digitalTable">
+                        <thead>
+                            <tr>
+                                <th>商品名称</th>
+                                <th>价格</th>
+                                <th>分类</th>
+                                <th>下载量</th>
+                                <th>网盘链接</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="ordersPage" style="display: none;">
+                    <input type="text" class="search-box" id="orderSearch" placeholder="搜索订单号或邮箱...">
+                    <div class="section-header">
+                        <h2>订单管理</h2>
+                    </div>
+                    <table class="table" id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>商品名称</th>
+                                <th>价格</th>
+                                <th>购买人</th>
+                                <th>联系方式</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </main>
         </div>
     </div>
@@ -720,6 +864,82 @@
         </div>
     </div>
 
+    <div class="modal-overlay" id="digitalModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="digitalModalTitle">添加数字资料</h3>
+                <button class="btn-close" onclick="closeDigitalModal()">×</button>
+            </div>
+            <form id="digitalForm">
+                <input type="hidden" id="digitalId">
+                <div class="form-group">
+                    <label>资料名称</label>
+                    <input type="text" id="digitalName" placeholder="请输入资料名称" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>价格</label>
+                        <input type="number" id="digitalPrice" placeholder="请输入价格" required>
+                    </div>
+                    <div class="form-group">
+                        <label>原价</label>
+                        <input type="number" id="digitalOriginalPrice" placeholder="请输入原价">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>分类</label>
+                    <select id="digitalCategory">
+                        <option value="code">源码代码</option>
+                        <option value="docs">文档资料</option>
+                        <option value="project">项目实战</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>百度网盘链接</label>
+                    <input type="text" id="digitalPanLink" placeholder="请输入百度网盘分享链接">
+                </div>
+                <div class="form-group">
+                    <label>提取码</label>
+                    <input type="text" id="digitalPanPassword" placeholder="请输入网盘提取码">
+                </div>
+                <div class="form-group">
+                    <label>下载文件1名称</label>
+                    <input type="text" id="digitalFile1Name" placeholder="如：资料.zip">
+                </div>
+                <div class="form-group">
+                    <label>下载文件1链接</label>
+                    <input type="text" id="digitalFile1Url" placeholder="网盘文件直接下载链接">
+                </div>
+                <div class="form-group">
+                    <label>下载文件2名称（选填）</label>
+                    <input type="text" id="digitalFile2Name" placeholder="如：资料2.zip">
+                </div>
+                <div class="form-group">
+                    <label>下载文件2链接（选填）</label>
+                    <input type="text" id="digitalFile2Url" placeholder="网盘文件直接下载链接">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>下载量</label>
+                        <input type="number" id="digitalDownloads" placeholder="下载次数" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>是否热销</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="digitalIsHot">
+                            <label for="digitalIsHot">热销商品</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>资料描述</label>
+                    <textarea id="digitalDesc" placeholder="请输入资料描述"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">保存</button>
+            </form>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="replyModal">
         <div class="modal">
             <div class="modal-header">
@@ -744,6 +964,11 @@
         let currentPage = 'dashboard';
         let editingProduct = null;
         let replyingMessageId = null;
+
+        function getAuthHeaders() {
+            const token = localStorage.getItem('adminToken');
+            return token ? { 'Authorization': token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             checkLogin();
@@ -770,6 +995,7 @@
             const data = await response.json();
             if (data.success) {
                 localStorage.setItem('adminUser', JSON.stringify(data.user));
+                localStorage.setItem('adminToken', data.token);
                 showAdminPanel(data.user);
             } else {
                 alert(data.message);
@@ -820,6 +1046,7 @@
 
         function logout() {
             localStorage.removeItem('adminUser');
+            localStorage.removeItem('adminToken');
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('loginPage').style.display = 'flex';
         }
@@ -841,6 +1068,8 @@
             document.getElementById('dashboardPage').style.display = 'none';
             document.getElementById('productsPage').style.display = 'none';
             document.getElementById('messagesPage').style.display = 'none';
+            document.getElementById('digitalPage').style.display = 'none';
+            document.getElementById('ordersPage').style.display = 'none';
 
             if (page === 'dashboard') {
                 document.getElementById('pageTitle').textContent = '数据概览';
@@ -854,6 +1083,14 @@
                 document.getElementById('pageTitle').textContent = '留言管理';
                 document.getElementById('messagesPage').style.display = 'block';
                 loadMessages();
+            } else if (page === 'digital') {
+                document.getElementById('pageTitle').textContent = '数字资料管理';
+                document.getElementById('digitalPage').style.display = 'block';
+                loadDigitalProducts();
+            } else if (page === 'orders') {
+                document.getElementById('pageTitle').textContent = '订单管理';
+                document.getElementById('ordersPage').style.display = 'block';
+                loadOrders();
             }
         }
 
@@ -1005,13 +1242,13 @@
             if (editingProduct) {
                 await fetch(`${BASE_URL}/api/products/${editingProduct.id}`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify(productData)
                 });
             } else {
                 await fetch(`${BASE_URL}/api/products`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify(productData)
                 });
             }
@@ -1028,7 +1265,8 @@
             if (!confirm('确定要删除这个商品吗？')) return;
 
             await fetch(`${BASE_URL}/api/products/${productId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: getAuthHeaders()
             });
 
             if (currentPage === 'products') {
@@ -1056,7 +1294,7 @@
             const replyContent = document.getElementById('replyContent').value;
             await fetch(`${BASE_URL}/api/messages/${replyingMessageId}/reply`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ reply: replyContent })
             });
 
@@ -1071,7 +1309,8 @@
             if (!confirm('确定要删除这条留言吗？')) return;
 
             await fetch(`${BASE_URL}/api/messages/${messageId}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: getAuthHeaders()
             });
 
             loadDashboard();
@@ -1090,6 +1329,255 @@
                 minute: '2-digit'
             });
         }
+
+        let editingDigitalProduct = null;
+
+        async function loadDigitalProducts() {
+            const keyword = document.getElementById('digitalSearch').value;
+            const url = keyword ? `/api/digital-products?keyword=${encodeURIComponent(keyword)}` : '/api/digital-products';
+            const response = await fetch(url);
+            const products = await response.json();
+            const tbody = document.querySelector('#digitalTable tbody');
+            tbody.innerHTML = '';
+
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="no-data">暂无数字资料</td></tr>';
+                return;
+            }
+
+            const categoryNames = {
+                'code': '源码代码',
+                'docs': '文档资料',
+                'project': '项目实战'
+            };
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>¥${product.price} <span style="color: #666; text-decoration: line-through;">¥${product.originalPrice}</span></td>
+                    <td>${categoryNames[product.category] || product.category}</td>
+                    <td>${product.downloads}</td>
+                    <td>${product.panLink ? '<span style="color: #00d9ff; font-size: 12px;">已设置</span>' : '-'}</td>
+                    <td>
+                        <button class="btn-action btn-edit" onclick="showEditDigitalModal(${product.id})">编辑</button>
+                        <button class="btn-action btn-delete" onclick="deleteDigitalProduct(${product.id})">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function showAddDigitalModal() {
+            editingDigitalProduct = null;
+            document.getElementById('digitalModalTitle').textContent = '添加数字资料';
+            document.getElementById('digitalId').value = '';
+            document.getElementById('digitalName').value = '';
+            document.getElementById('digitalPrice').value = '';
+            document.getElementById('digitalOriginalPrice').value = '';
+            document.getElementById('digitalCategory').value = 'code';
+            document.getElementById('digitalPanLink').value = '';
+            document.getElementById('digitalPanPassword').value = '';
+            document.getElementById('digitalFile1Name').value = '';
+            document.getElementById('digitalFile1Url').value = '';
+            document.getElementById('digitalFile2Name').value = '';
+            document.getElementById('digitalFile2Url').value = '';
+            document.getElementById('digitalDownloads').value = '0';
+            document.getElementById('digitalIsHot').checked = false;
+            document.getElementById('digitalDesc').value = '';
+            document.getElementById('digitalModal').classList.add('active');
+        }
+
+        async function showEditDigitalModal(productId) {
+            const response = await fetch(`${BASE_URL}/api/digital-products/${productId}`);
+            editingDigitalProduct = await response.json();
+
+            document.getElementById('digitalModalTitle').textContent = '编辑数字资料';
+            document.getElementById('digitalId').value = editingDigitalProduct.id;
+            document.getElementById('digitalName').value = editingDigitalProduct.name;
+            document.getElementById('digitalPrice').value = editingDigitalProduct.price;
+            document.getElementById('digitalOriginalPrice').value = editingDigitalProduct.originalPrice;
+            document.getElementById('digitalCategory').value = editingDigitalProduct.category;
+            document.getElementById('digitalPanLink').value = editingDigitalProduct.panLink || '';
+            document.getElementById('digitalPanPassword').value = editingDigitalProduct.panPassword || '';
+            document.getElementById('digitalDownloads').value = editingDigitalProduct.downloads;
+            document.getElementById('digitalIsHot').checked = editingDigitalProduct.isHot;
+            document.getElementById('digitalDesc').value = editingDigitalProduct.description;
+            
+            if (editingDigitalProduct.files && editingDigitalProduct.files[0]) {
+                document.getElementById('digitalFile1Name').value = editingDigitalProduct.files[0].name || '';
+                document.getElementById('digitalFile1Url').value = editingDigitalProduct.files[0].url || '';
+            }
+            if (editingDigitalProduct.files && editingDigitalProduct.files[1]) {
+                document.getElementById('digitalFile2Name').value = editingDigitalProduct.files[1].name || '';
+                document.getElementById('digitalFile2Url').value = editingDigitalProduct.files[1].url || '';
+            }
+
+            document.getElementById('digitalModal').classList.add('active');
+        }
+
+        function closeDigitalModal() {
+            document.getElementById('digitalModal').classList.remove('active');
+            editingDigitalProduct = null;
+        }
+
+        document.getElementById('digitalForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const files = [];
+            if (document.getElementById('digitalFile1Name').value && document.getElementById('digitalFile1Url').value) {
+                files.push({
+                    name: document.getElementById('digitalFile1Name').value,
+                    url: document.getElementById('digitalFile1Url').value
+                });
+            }
+            if (document.getElementById('digitalFile2Name').value && document.getElementById('digitalFile2Url').value) {
+                files.push({
+                    name: document.getElementById('digitalFile2Name').value,
+                    url: document.getElementById('digitalFile2Url').value
+                });
+            }
+
+            const productData = {
+                name: document.getElementById('digitalName').value,
+                price: parseFloat(document.getElementById('digitalPrice').value),
+                originalPrice: parseFloat(document.getElementById('digitalOriginalPrice').value) || parseFloat(document.getElementById('digitalPrice').value),
+                category: document.getElementById('digitalCategory').value,
+                panLink: document.getElementById('digitalPanLink').value,
+                panPassword: document.getElementById('digitalPanPassword').value,
+                downloads: parseInt(document.getElementById('digitalDownloads').value) || 0,
+                isHot: document.getElementById('digitalIsHot').checked,
+                description: document.getElementById('digitalDesc').value,
+                files: files
+            };
+
+            if (editingDigitalProduct) {
+                await fetch(`${BASE_URL}/api/digital-products/${editingDigitalProduct.id}`, {
+                    method: 'PUT',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                await fetch(`${BASE_URL}/api/digital-products`, {
+                    method: 'POST',
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(productData)
+                });
+            }
+
+            closeDigitalModal();
+            if (currentPage === 'digital') {
+                loadDigitalProducts();
+            }
+        });
+
+        async function deleteDigitalProduct(productId) {
+            if (!confirm('确定要删除这个数字资料吗？')) return;
+
+            await fetch(`${BASE_URL}/api/digital-products/${productId}`, {
+                method: 'DELETE',
+                headers: getAuthHeaders()
+            });
+
+            if (currentPage === 'digital') {
+                loadDigitalProducts();
+            }
+        }
+
+        document.getElementById('digitalSearch').addEventListener('input', () => {
+            loadDigitalProducts();
+        });
+
+        async function loadOrders() {
+            const response = await fetch(`${BASE_URL}/api/orders`, {
+                headers: getAuthHeaders()
+            });
+            const orders = await response.json();
+            const tbody = document.querySelector('#ordersTable tbody');
+            tbody.innerHTML = '';
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="no-data">暂无订单</td></tr>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span style="font-family: monospace; color: #00d9ff;">#${order.id}</span></td>
+                    <td>${order.productName}</td>
+                    <td>¥${order.price}</td>
+                    <td>${order.buyerName}</td>
+                    <td>
+                        <div>📧 ${order.email}</div>
+                        <div>📱 ${order.phone || '-'}</div>
+                    </td>
+                    <td><span class="badge ${getOrderStatusBadge(order.status)}">${getOrderStatusText(order.status)}</span></td>
+                    <td>${formatDate(order.createdAt)}</td>
+                    <td>
+                        ${order.status === 'pending' ? `<button class="btn-action btn-reply" onclick="confirmOrder(${order.id})">确认付款</button>` : ''}
+                        ${order.status === 'pending' ? `<button class="btn-action btn-delete" onclick="cancelOrder(${order.id})">取消订单</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function getOrderStatusBadge(status) {
+            switch (status) {
+                case 'pending': return 'pending';
+                case 'completed': return 'replied';
+                case 'cancelled': return 'hot';
+                default: return 'pending';
+            }
+        }
+
+        function getOrderStatusText(status) {
+            switch (status) {
+                case 'pending': return '待确认';
+                case 'completed': return '已完成';
+                case 'cancelled': return '已取消';
+                default: return status;
+            }
+        }
+
+        async function confirmOrder(orderId) {
+            if (!confirm('确认用户已付款？确认后将开放下载链接。')) return;
+
+            const response = await fetch(`${BASE_URL}/api/orders/${orderId}/confirm`, {
+                method: 'PUT',
+                headers: getAuthHeaders()
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('订单已确认，下载链接已开放');
+                loadOrders();
+            } else {
+                alert(data.message || '操作失败');
+            }
+        }
+
+        async function cancelOrder(orderId) {
+            if (!confirm('确定要取消此订单吗？')) return;
+
+            const response = await fetch(`${BASE_URL}/api/orders/${orderId}/cancel`, {
+                method: 'PUT',
+                headers: getAuthHeaders()
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('订单已取消');
+                loadOrders();
+            } else {
+                alert(data.message || '操作失败');
+            }
+        }
+
+        document.getElementById('orderSearch').addEventListener('input', () => {
+            loadOrders();
+        });
     </script>
 </body>
 </html>

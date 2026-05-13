@@ -8,7 +8,7 @@ const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../')));
 
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {
@@ -18,6 +18,8 @@ if (!fs.existsSync(dataDir)) {
 const productsFilePath = path.join(dataDir, 'products.json');
 const messagesFilePath = path.join(dataDir, 'messages.json');
 const usersFilePath = path.join(dataDir, 'users.json');
+const digitalProductsFilePath = path.join(dataDir, 'digital_products.json');
+const ordersFilePath = path.join(dataDir, 'orders.json');
 
 if (!fs.existsSync(productsFilePath)) {
     fs.writeFileSync(productsFilePath, JSON.stringify([
@@ -170,7 +172,71 @@ if (!fs.existsSync(usersFilePath)) {
     ], null, 2));
 }
 
-let currentUser = null;
+if (!fs.existsSync(digitalProductsFilePath)) {
+    fs.writeFileSync(digitalProductsFilePath, JSON.stringify([
+        {
+            id: 1,
+            name: 'STM32F103C8T6 完整例程代码',
+            price: 19.9,
+            originalPrice: 29.9,
+            description: '包含GPIO、定时器、串口、I2C、SPI等20+个例程，带详细注释',
+            category: 'code',
+            downloads: 156,
+            files: [
+                { name: '基础例程.zip', url: 'https://example.com/stm32-basic.zip' },
+                { name: '进阶例程.zip', url: 'https://example.com/stm32-advanced.zip' }
+            ],
+            isHot: true
+        },
+        {
+            id: 2,
+            name: 'STM32 HAL库开发指南 PDF',
+            price: 9.9,
+            originalPrice: 19.9,
+            description: '从零开始学习STM32 HAL库开发，附大量实战项目',
+            category: 'docs',
+            downloads: 328,
+            files: [
+                { name: 'STM32 HAL开发指南.pdf', url: 'https://example.com/stm32-hal-guide.pdf' }
+            ],
+            isHot: true
+        },
+        {
+            id: 3,
+            name: '物联网项目实战源码',
+            price: 29.9,
+            originalPrice: 49.9,
+            description: '包含MQTT、HTTP、TCP等物联网通信项目源码',
+            category: 'project',
+            downloads: 89,
+            files: [
+                { name: 'MQTT项目源码.zip', url: 'https://example.com/mqtt-project.zip' },
+                { name: 'HTTP项目源码.zip', url: 'https://example.com/http-project.zip' }
+            ],
+            isHot: false
+        },
+        {
+            id: 4,
+            name: '毕业设计指导文档',
+            price: 15.9,
+            originalPrice: 25.9,
+            description: 'STM32毕业设计选题、开题报告、答辩PPT模板',
+            category: 'docs',
+            downloads: 245,
+            files: [
+                { name: '毕设指导文档.pdf', url: 'https://example.com/thesis-guide.pdf' },
+                { name: 'PPT模板.zip', url: 'https://example.com/ppt-template.zip' }
+            ],
+            isHot: true
+        }
+    ], null, 2));
+}
+
+if (!fs.existsSync(ordersFilePath)) {
+    fs.writeFileSync(ordersFilePath, JSON.stringify([], null, 2));
+}
+
+let loggedInUsers = {};
 
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
@@ -178,16 +244,34 @@ app.post('/api/login', (req, res) => {
     const user = users.find(u => u.username === username && u.password === password);
     
     if (user) {
-        currentUser = user;
+        const token = generateToken();
+        loggedInUsers[token] = user;
         res.json({ 
             success: true, 
             message: '登录成功',
-            user: { id: user.id, username: user.username, role: user.role }
+            user: { id: user.id, username: user.username, role: user.role },
+            token: token
         });
     } else {
         res.json({ success: false, message: '用户名或密码错误' });
     }
 });
+
+function generateToken() {
+    return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+function checkAdmin(req, res) {
+    const token = req.headers['authorization'] || req.query.token;
+    if (!token) {
+        return null;
+    }
+    const user = loggedInUsers[token];
+    if (user && user.role === 'admin') {
+        return user;
+    }
+    return null;
+}
 
 app.post('/api/register', (req, res) => {
     const { username, password, email } = req.body;
@@ -243,7 +327,8 @@ app.get('/api/products/:id', (req, res) => {
 });
 
 app.post('/api/products', (req, res) => {
-    if (!currentUser || currentUser.role !== 'admin') {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
         return res.status(403).json({ message: '需要管理员权限' });
     }
     
@@ -267,7 +352,8 @@ app.post('/api/products', (req, res) => {
 });
 
 app.put('/api/products/:id', (req, res) => {
-    if (!currentUser || currentUser.role !== 'admin') {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
         return res.status(403).json({ message: '需要管理员权限' });
     }
     
@@ -284,7 +370,8 @@ app.put('/api/products/:id', (req, res) => {
 });
 
 app.delete('/api/products/:id', (req, res) => {
-    if (!currentUser || currentUser.role !== 'admin') {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
         return res.status(403).json({ message: '需要管理员权限' });
     }
     
@@ -334,7 +421,8 @@ app.get('/api/messages', (req, res) => {
 });
 
 app.put('/api/messages/:id/reply', (req, res) => {
-    if (!currentUser || currentUser.role !== 'admin') {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
         return res.status(403).json({ message: '需要管理员权限' });
     }
     
@@ -352,7 +440,8 @@ app.put('/api/messages/:id/reply', (req, res) => {
 });
 
 app.delete('/api/messages/:id', (req, res) => {
-    if (!currentUser || currentUser.role !== 'admin') {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
         return res.status(403).json({ message: '需要管理员权限' });
     }
     
@@ -408,6 +497,230 @@ app.get('/api/categories', (req, res) => {
     ]);
 });
 
+app.get('/api/digital-products', (req, res) => {
+    const category = req.query.category;
+    const keyword = req.query.keyword;
+    let products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    
+    if (category && category !== 'all') {
+        products = products.filter(p => p.category === category);
+    }
+    
+    if (keyword) {
+        const kw = keyword.toLowerCase();
+        products = products.filter(p => 
+            p.name.toLowerCase().includes(kw) || 
+            p.description.toLowerCase().includes(kw)
+        );
+    }
+    
+    res.json(products);
+});
+
+app.get('/api/digital-products/:id', (req, res) => {
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const product = products.find(p => p.id === parseInt(req.params.id));
+    
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ message: '数字商品不存在' });
+    }
+});
+
+app.post('/api/digital-products', (req, res) => {
+    const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
+    
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const newProduct = {
+        id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+        name,
+        price: parseFloat(price),
+        originalPrice: parseFloat(originalPrice) || parseFloat(price),
+        category,
+        panLink: panLink || '',
+        panPassword: panPassword || '',
+        downloads: parseInt(downloads) || 0,
+        isHot: isHot || false,
+        description: description || '',
+        files: files || []
+    };
+    
+    products.push(newProduct);
+    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
+    
+    res.json({ success: true, message: '数字商品添加成功', product: newProduct });
+});
+
+app.put('/api/digital-products/:id', (req, res) => {
+    const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
+    
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const index = products.findIndex(p => p.id === parseInt(req.params.id));
+    
+    if (index === -1) {
+        return res.status(404).json({ success: false, message: '数字商品不存在' });
+    }
+    
+    products[index] = {
+        ...products[index],
+        name: name || products[index].name,
+        price: price ? parseFloat(price) : products[index].price,
+        originalPrice: originalPrice ? parseFloat(originalPrice) : products[index].originalPrice,
+        category: category || products[index].category,
+        panLink: panLink || products[index].panLink,
+        panPassword: panPassword || products[index].panPassword,
+        downloads: downloads ? parseInt(downloads) : products[index].downloads,
+        isHot: isHot !== undefined ? isHot : products[index].isHot,
+        description: description || products[index].description,
+        files: files || products[index].files
+    };
+    
+    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
+    
+    res.json({ success: true, message: '数字商品更新成功', product: products[index] });
+});
+
+app.delete('/api/digital-products/:id', (req, res) => {
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const filtered = products.filter(p => p.id !== parseInt(req.params.id));
+    
+    if (filtered.length === products.length) {
+        return res.status(404).json({ success: false, message: '数字商品不存在' });
+    }
+    
+    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(filtered, null, 2));
+    
+    res.json({ success: true, message: '数字商品删除成功' });
+});
+
+app.post('/api/orders', (req, res) => {
+    const { productId, email, buyerName, phone } = req.body;
+    
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const product = products.find(p => p.id === parseInt(productId));
+    
+    if (!product) {
+        return res.status(404).json({ success: false, message: '商品不存在' });
+    }
+    
+    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+    const newOrder = {
+        id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+        productId: product.id,
+        productName: product.name,
+        price: product.price,
+        buyerName,
+        email,
+        phone,
+        status: 'pending',
+        downloadLinks: [],
+        panLink: '',
+        panPassword: '',
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+    };
+    
+    orders.push(newOrder);
+    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+    
+    res.json({
+        success: true,
+        message: '订单已创建，请完成支付',
+        order: newOrder,
+        paymentInfo: {
+            wechat: 'li28430132',
+            phone: '16627878630'
+        }
+    });
+});
+
+app.put('/api/orders/:id/confirm', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
+        return res.status(403).json({ success: false, message: '需要管理员权限' });
+    }
+    
+    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+    const index = orders.findIndex(o => o.id === parseInt(req.params.id));
+    
+    if (index === -1) {
+        return res.status(404).json({ success: false, message: '订单不存在' });
+    }
+    
+    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+    const product = products.find(p => p.id === orders[index].productId);
+    
+    if (!product) {
+        return res.status(404).json({ success: false, message: '商品不存在' });
+    }
+    
+    orders[index].status = 'completed';
+    orders[index].downloadLinks = product.files;
+    orders[index].panLink = product.panLink || '';
+    orders[index].panPassword = product.panPassword || '';
+    
+    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+    
+    product.downloads += 1;
+    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
+    
+    res.json({
+        success: true,
+        message: '订单已确认，下载链接已激活',
+        order: orders[index]
+    });
+});
+
+app.put('/api/orders/:id/cancel', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) {
+        return res.status(403).json({ success: false, message: '需要管理员权限' });
+    }
+    
+    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+    const index = orders.findIndex(o => o.id === parseInt(req.params.id));
+    
+    if (index === -1) {
+        return res.status(404).json({ success: false, message: '订单不存在' });
+    }
+    
+    orders[index].status = 'cancelled';
+    
+    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+    
+    res.json({
+        success: true,
+        message: '订单已取消',
+        order: orders[index]
+    });
+});
+
+app.get('/api/orders', (req, res) => {
+    const email = req.query.email;
+    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+    
+    if (email) {
+        const userOrders = orders.filter(o => o.email === email);
+        res.json(userOrders);
+    } else {
+        const admin = checkAdmin(req, res);
+        if (!admin) {
+            return res.status(403).json({ message: '需要管理员权限' });
+        }
+        res.json(orders);
+    }
+});
+
+app.get('/api/digital-categories', (req, res) => {
+    res.json([
+        { id: 'all', name: '全部', icon: 'fa-box' },
+        { id: 'code', name: '源码代码', icon: 'fa-code' },
+        { id: 'docs', name: '文档资料', icon: 'fa-file-pdf' },
+        { id: 'project', name: '项目实战', icon: 'fa-folder-open' }
+    ]);
+});
+
 app.listen(PORT, () => {
     console.log(`服务器运行在 http://localhost:${PORT}`);
     console.log('API接口列表:');
@@ -424,4 +737,11 @@ app.listen(PORT, () => {
     console.log('  GET  /api/stats             - 获取统计数据');
     console.log('  GET  /api/categories        - 获取商品分类');
     console.log('  GET  /api/contact           - 获取联系信息');
+    console.log('  GET  /api/digital-products  - 获取数字商品列表');
+    console.log('  GET  /api/digital-products/:id - 获取单个数字商品');
+    console.log('  POST /api/orders            - 创建订单');
+    console.log('  GET  /api/orders            - 获取订单列表(管理员/用户)');
+    console.log('  PUT  /api/orders/:id/confirm - 确认订单(管理员)');
+    console.log('  PUT  /api/orders/:id/cancel  - 取消订单(管理员)');
+    console.log('  GET  /api/digital-categories - 获取数字商品分类');
 });
