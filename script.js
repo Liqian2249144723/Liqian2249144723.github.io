@@ -7,10 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabBtns = document.querySelectorAll('.tab-btn');
     const productCards = document.querySelectorAll('.product-card');
     const contactButtons = document.querySelectorAll('.btn-contact');
+    const messageForm = document.querySelector('.message-form');
 
     console.log('网站加载完成！');
-    console.log('找到', tabBtns.length, '个分类按钮');
-    console.log('找到', productCards.length, '个商品');
+
+    initAPICalls();
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -95,4 +96,128 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    if (messageForm) {
+        messageForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                content: document.getElementById('content').value
+            };
+
+            fetch('http://localhost:3001/api/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                messageForm.reset();
+            })
+            .catch(error => {
+                console.error('发送失败:', error);
+                alert('发送失败，请稍后重试');
+            });
+        });
+    }
 });
+
+function initAPICalls() {
+    fetchStats();
+    fetchProducts();
+    fetchContact();
+}
+
+function fetchStats() {
+    fetch('http://localhost:3001/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            const statValues = document.querySelectorAll('.stat-value');
+            if (statValues.length >= 4) {
+                statValues[0].textContent = data.years + '年';
+                statValues[1].textContent = data.videos + '+';
+                statValues[2].textContent = data.students + '+';
+                statValues[3].textContent = data.projects + '+';
+            }
+            console.log('获取统计数据成功:', data);
+        })
+        .catch(error => {
+            console.log('获取统计数据失败（可能后端未启动）:', error);
+        });
+}
+
+function fetchProducts() {
+    fetch('http://localhost:3001/api/products')
+        .then(response => response.json())
+        .then(data => {
+            console.log('获取商品数据成功:', data);
+            updateProductCards(data);
+        })
+        .catch(error => {
+            console.log('获取商品数据失败（可能后端未启动）:', error);
+        });
+}
+
+function fetchContact() {
+    fetch('http://localhost:3001/api/contact')
+        .then(response => response.json())
+        .then(data => {
+            console.log('获取联系信息成功:', data);
+            updateContactInfo(data);
+        })
+        .catch(error => {
+            console.log('获取联系信息失败（可能后端未启动）:', error);
+        });
+}
+
+function updateProductCards(products) {
+    const container = document.querySelector('.products-grid');
+    if (!container) return;
+
+    const cards = container.querySelectorAll('.product-card');
+    cards.forEach((card, index) => {
+        if (products[index]) {
+            const title = card.querySelector('.product-title');
+            const price = card.querySelector('.product-price');
+            const desc = card.querySelector('.product-desc');
+            
+            if (title) title.textContent = products[index].name;
+            if (price) price.textContent = '¥' + products[index].price;
+            if (desc) desc.textContent = products[index].description;
+        }
+    });
+}
+
+function updateContactInfo(contact) {
+    const contactItems = document.querySelectorAll('.contact-item');
+    contactItems.forEach(item => {
+        const icon = item.querySelector('i');
+        if (icon) {
+            if (icon.classList.contains('fa-phone')) {
+                item.querySelector('span').textContent = contact.phone;
+            } else if (icon.classList.contains('fa-qq')) {
+                item.querySelector('span').textContent = 'QQ：' + contact.qq;
+            } else if (icon.classList.contains('fa-weixin')) {
+                item.querySelector('span').textContent = '微信：' + contact.wechat;
+            } else if (icon.classList.contains('fa-clock')) {
+                item.querySelector('span').textContent = '工作时间：' + contact.workTime;
+            } else if (icon.classList.contains('fa-map-marker-alt')) {
+                item.querySelector('span').textContent = '地点：' + contact.address;
+            }
+        }
+    });
+
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    copyButtons.forEach(btn => {
+        const label = btn.getAttribute('data-label');
+        if (label === '微信') btn.setAttribute('data-copy', contact.wechat);
+        if (label === 'QQ') btn.setAttribute('data-copy', contact.qq);
+        if (label === '电话') btn.setAttribute('data-copy', contact.phone);
+    });
+}

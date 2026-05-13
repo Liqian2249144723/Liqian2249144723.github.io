@@ -1150,3 +1150,70 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.message-form-card {
+    margin-top: 30px;
+    padding: 35px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-form-card h3 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.message-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #00d9ff;
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #666;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.message-form .btn {
+    align-self: flex-start;
+    padding: 12px 35px;
+    font-size: 15px;
+    font-weight: 600;
+}
