@@ -759,7 +759,7 @@
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
 
-            const response = await fetch('http://localhost:3001/api/login', {
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -780,7 +780,7 @@
             const email = document.getElementById('regEmail').value;
             const password = document.getElementById('regPassword').value;
 
-            const response = await fetch('http://localhost:3001/api/register', {
+            const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password, email })
@@ -856,7 +856,7 @@
         }
 
         async function loadDashboard() {
-            const response = await fetch('http://localhost:3001/api/stats');
+            const response = await fetch('/api/stats');
             const stats = await response.json();
 
             document.getElementById('statProducts').textContent = stats.totalProducts;
@@ -868,7 +868,7 @@
         }
 
         async function loadRecentMessages() {
-            const response = await fetch('http://localhost:3001/api/messages?limit=5');
+            const response = await fetch('/api/messages?limit=5');
             const data = await response.json();
             const tbody = document.querySelector('#recentMessages tbody');
             tbody.innerHTML = '';
@@ -890,7 +890,7 @@
 
         async function loadProducts() {
             const keyword = document.getElementById('productSearch').value;
-            const url = keyword ? `http://localhost:3001/api/products?keyword=${encodeURIComponent(keyword)}` : 'http://localhost:3001/api/products';
+            const url = keyword ? `/api/products?keyword=${encodeURIComponent(keyword)}` : '/api/products';
             const response = await fetch(url);
             const products = await response.json();
             const tbody = document.querySelector('#productsTable tbody');
@@ -920,7 +920,7 @@
         }
 
         async function loadMessages() {
-            const response = await fetch('http://localhost:3001/api/messages');
+            const response = await fetch('/api/messages');
             const data = await response.json();
             const tbody = document.querySelector('#messagesTable tbody');
             tbody.innerHTML = '';
@@ -966,7 +966,7 @@
         }
 
         async function showEditProductModal(productId) {
-            const response = await fetch(`http://localhost:3001/api/products/${productId}`);
+            const response = await fetch(`/api/products/${productId}`);
             editingProduct = await response.json();
 
             document.getElementById('modalTitle').textContent = '编辑商品';
@@ -1001,13 +1001,13 @@
             };
 
             if (editingProduct) {
-                await fetch(`http://localhost:3001/api/products/${editingProduct.id}`, {
+                await fetch(`/api/products/${editingProduct.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
                 });
             } else {
-                await fetch('http://localhost:3001/api/products', {
+                await fetch('/api/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(productData)
@@ -1025,7 +1025,7 @@
         async function deleteProduct(productId) {
             if (!confirm('确定要删除这个商品吗？')) return;
 
-            await fetch(`http://localhost:3001/api/products/${productId}`, {
+            await fetch(`/api/products/${productId}`, {
                 method: 'DELETE'
             });
 
@@ -1052,7 +1052,7 @@
             e.preventDefault();
 
             const replyContent = document.getElementById('replyContent').value;
-            await fetch(`http://localhost:3001/api/messages/${replyingMessageId}/reply`, {
+            await fetch(`/api/messages/${replyingMessageId}/reply`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ reply: replyContent })
@@ -1068,7 +1068,7 @@
         async function deleteMessage(messageId) {
             if (!confirm('确定要删除这条留言吗？')) return;
 
-            await fetch(`http://localhost:3001/api/messages/${messageId}`, {
+            await fetch(`/api/messages/${messageId}`, {
                 method: 'DELETE'
             });
 

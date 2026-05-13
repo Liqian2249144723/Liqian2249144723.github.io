@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 content: document.getElementById('content').value
             };
 
-            fetch('http://localhost:3001/api/messages', {
+            fetch('/api/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ function initAPICalls() {
 }
 
 function fetchStats() {
-    fetch('http://localhost:3001/api/stats')
+    fetch('/api/stats')
         .then(response => response.json())
         .then(data => {
             const statValues = document.querySelectorAll('.stat-value');
@@ -153,7 +153,7 @@ function fetchStats() {
 }
 
 function fetchProducts() {
-    fetch('http://localhost:3001/api/products')
+    fetch('/api/products')
         .then(response => response.json())
         .then(data => {
             console.log('获取商品数据成功:', data);
@@ -165,7 +165,7 @@ function fetchProducts() {
 }
 
 function fetchContact() {
-    fetch('http://localhost:3001/api/contact')
+    fetch('/api/contact')
         .then(response => response.json())
         .then(data => {
             console.log('获取联系信息成功:', data);

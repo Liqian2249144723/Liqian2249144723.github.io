@@ -1,0 +1,44 @@
+export default async function handler(req, res) {
+  // 设置 CORS 头
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // 产品数据（静态）
+  const products = [
+    { id: 1, name: 'STM32F103C8T6开发板', price: 45, originalPrice: 55, category: 'development', description: 'STM32F103C8T6最小系统板，核心板，学习板，支持USB下载', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=STM32%20development%20board%20circuit%20microcontroller&image_size=square', stock: 100, sold: 326, isHot: true },
+    { id: 2, name: 'HC-SR04超声波模块', price: 12, originalPrice: 15, category: 'sensor', description: '超声波测距模块，支持2cm-400cm测距，精度高', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=ultrasonic%20sensor%20module%20electronic%20component&image_size=square', stock: 200, sold: 512, isHot: true },
+    { id: 3, name: 'OLED显示屏 0.96寸', price: 18, originalPrice: 25, category: 'display', description: '0.96寸OLED显示屏，128x64分辨率，I2C接口', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=OLED%20display%20screen%20small%20electronic&image_size=square', stock: 150, sold: 289, isHot: false },
+    { id: 4, name: 'DS18B20温度传感器', price: 8, originalPrice: 10, category: 'sensor', description: '单总线温度传感器，-55°C-125°C，精度0.5°C', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=temperature%20sensor%20DS18B20%20electronic%20component&image_size=square', stock: 500, sold: 891, isHot: true },
+    { id: 5, name: 'STM32学习套件', price: 128, originalPrice: 168, category: 'kit', description: '包含STM32开发板+10种传感器+教程资料+杜邦线', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=STM32%20learning%20kit%20electronic%20components%20box&image_size=square', stock: 50, sold: 156, isHot: true },
+    { id: 6, name: 'ESP32开发板', price: 35, originalPrice: 45, category: 'development', description: 'ESP32-WROOM-32开发板，支持WiFi+蓝牙，物联网开发首选', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=ESP32%20development%20board%20WiFi%20bluetooth&image_size=square', stock: 80, sold: 234, isHot: false },
+    { id: 7, name: 'SG90舵机', price: 15, originalPrice: 18, category: 'actuator', description: '9g微型舵机，角度可控，适合机器人项目', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=SG90%20servo%20motor%20robot%20part&image_size=square', stock: 120, sold: 445, isHot: false },
+    { id: 8, name: 'MQ-2烟雾传感器', price: 18, originalPrice: 22, category: 'sensor', description: '烟雾气体传感器模块，检测液化气、甲烷、烟雾', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=smoke%20sensor%20MQ2%20gas%20detector&image_size=square', stock: 100, sold: 178, isHot: false },
+    { id: 9, name: 'Arduino Uno R3', price: 42, originalPrice: 55, category: 'development', description: 'Arduino Uno R3开发板，入门级单片机学习板', image: 'https://neeko-copilot.bytedance.net/api/text_to_image?prompt=Arduino%20Uno%20R3%20development%20board&image_size=square', stock: 60, sold: 312, isHot: true }
+  ];
+
+  if (req.method === 'GET') {
+    const category = req.query.category;
+    const keyword = req.query.keyword;
+    let filteredProducts = [...products];
+
+    if (category && category !== 'all') {
+      filteredProducts = filteredProducts.filter(p => p.category === category);
+    }
+
+    if (keyword) {
+      const kw = keyword.toLowerCase();
+      filteredProducts = filteredProducts.filter(p => 
+        p.name.toLowerCase().includes(kw) || p.description.toLowerCase().includes(kw)
+      );
+    }
+
+    return res.json(filteredProducts);
+  }
+
+  res.status(405).json({ message: 'Method not allowed' });
+}
