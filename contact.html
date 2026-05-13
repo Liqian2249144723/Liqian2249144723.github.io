@@ -73,29 +73,26 @@
         </div>
 
         <div class="contact-form-card">
-                <h3>需求咨询</h3>
-                <form id="contactForm">
-                    <div class="form-group">
-                        <input type="text" id="name" placeholder="您的姓名" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="phone" placeholder="联系电话" required>
-                    </div>
-                    <div class="form-group">
-                        <select id="service" required>
-                            <option value="">选择咨询服务</option>
-                            <option value="STM32程序开发">STM32程序开发</option>
-                            <option value="PCB设计">PCB设计</option>
-                            <option value="实物调试">实物调试</option>
-                            <option value="视频发货">视频发货</option>
-                            <option value="其他服务">其他服务</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" placeholder="请描述您的需求..." rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">提交咨询</button>
-                </form>
+                <h3>快速联系</h3>
+                <p class="form-desc">点击下方按钮一键复制联系方式，添加微信或QQ咨询</p>
+                <div class="quick-contact-buttons">
+                    <button class="btn btn-primary copy-btn" data-copy="li28430132" data-label="微信">
+                        <i class="fab fa-weixin"></i>
+                        复制微信号
+                    </button>
+                    <button class="btn btn-outline copy-btn" data-copy="2249144723" data-label="QQ">
+                        <i class="fab fa-qq"></i>
+                        复制QQ号
+                    </button>
+                    <button class="btn btn-outline copy-btn" data-copy="16627878630" data-label="电话">
+                        <i class="fas fa-phone"></i>
+                        复制手机号
+                    </button>
+                </div>
+                <div class="contact-tips">
+                    <p>📌 工作时间：周一到周六 9:00-18:00</p>
+                    <p>📌 添加好友时请备注「毕业设计咨询」</p>
+                </div>
             </div>
 
             <div class="donation-section">

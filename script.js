@@ -75,31 +75,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    copyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const text = this.getAttribute('data-copy');
+            const label = this.getAttribute('data-label');
             
-            const name = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const service = document.getElementById('service').value;
-            const message = document.getElementById('message').value;
-
-            const subject = encodeURIComponent('【原形工坊】需求咨询 - ' + service);
-            const body = encodeURIComponent(
-                '姓名：' + name + '\n' +
-                '电话：' + phone + '\n' +
-                '服务类型：' + service + '\n' +
-                '需求描述：\n' + message
-            );
-
-            const mailtoLink = 'mailto:2249144723@qq.com?subject=' + subject + '&body=' + body;
-            window.location.href = mailtoLink;
-
-            setTimeout(() => {
-                alert('感谢您的咨询！\n\n您的需求信息已准备发送，我会尽快与您联系。\n\n如有紧急需求，可直接联系：\n📞 电话：16627878630\n📱 微信：li28430132');
-                contactForm.reset();
-            }, 500);
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-check"></i> 已复制！';
+                this.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+                
+                setTimeout(() => {
+                    this.innerHTML = originalHTML;
+                    this.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                alert(label + '：' + text + '\n\n已显示在屏幕上，请手动复制');
+            });
         });
-    }
+    });
 });

@@ -630,57 +630,47 @@ body {
 
 .contact-form-card h3 {
     font-size: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
-.form-group {
-    margin-bottom: 18px;
+.form-desc {
+    color: #888;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 14px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    color: #fff;
-    font-size: 15px;
-    transition: all 0.3s ease;
+.quick-contact-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #00d9ff;
-    background: rgba(0, 217, 255, 0.1);
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: #666;
-}
-
-.form-group select {
-    cursor: pointer;
-}
-
-.form-group select option {
-    background: #1a1a2e;
-    color: #fff;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.btn-block {
+.copy-btn {
     width: 100%;
     justify-content: center;
+    padding: 14px 25px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+}
+
+.copy-btn:hover {
+    transform: translateY(-2px);
+}
+
+.contact-tips {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-tips p {
+    color: #ccc;
+    font-size: 13px;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
 .donation-section {
