@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>原形工坊 - STM32商品</title>
-    <link rel="stylesheet" href="styles.css?v=6.0">
+    <link rel="stylesheet" href="styles.css?v=7.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
@@ -20,6 +20,7 @@
                 <li><a href="blog.html" class="nav-link">技术博客</a></li>
                 <li><a href="about.html" class="nav-link">关于我</a></li>
                 <li><a href="contact.html" class="nav-link">联系我们</a></li>
+                <li><a href="admin.html" class="nav-link" target="_blank">后台管理</a></li>
             </ul>
             <div class="nav-social">
                 <a href="https://v.douyin.com/R51_hla2zOA/" target="_blank" rel="noopener noreferrer" class="social-icon" title="抖音">
@@ -44,91 +45,21 @@
             <p>点击商品查看详情并购买</p>
         </div>
 
-        <div class="product-tabs">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="搜索商品..." class="search-input">
+            <button id="searchBtn" class="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <div class="product-tabs" id="categoryTabs">
             <button class="tab-btn active" data-tab="all">全部商品</button>
-            <button class="tab-btn" data-tab="code">纯代码文件</button>
-            <button class="tab-btn" data-tab="kit">代码+材料包</button>
         </div>
         
-        <div class="products-grid">
-            <div class="product-card" data-category="kit">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20microcontroller%20development%20board%20kit%20electronic%20components%20professional&image_size=square" alt="STM32入门套件">
-                    <div class="product-badge kit">材料包</div>
-                </div>
-                <div class="product-info">
-                    <h3>STM32F103入门套件</h3>
-                    <p>包含STM32F103开发板、USB线、杜邦线等材料</p>
-                    <div class="product-price">¥128</div>
-                    <button class="btn btn-primary btn-buy" data-product="STM32F103入门套件 - ¥128">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="kit">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=STM32%20robot%20car%20kit%20with%20motor%20driver%20electronic%20parts%20professional&image_size=square" alt="STM32麦克纳姆轮套件">
-                    <div class="product-badge kit">材料包</div>
-                    <div class="product-badge hot">热卖</div>
-                </div>
-                <div class="product-info">
-                    <h3>STM32麦克纳姆轮小车套件</h3>
-                    <p>4轮独立驱动，支持全向移动</p>
-                    <div class="product-price">¥268</div>
-                    <button class="btn btn-primary btn-buy" data-product="STM32麦克纳姆轮小车套件 - ¥268">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="kit">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=MPU6050%20accelerometer%20gyroscope%20sensor%20module%20circuit%20professional&image_size=square" alt="MPU6050传感器套件">
-                    <div class="product-badge kit">材料包</div>
-                </div>
-                <div class="product-info">
-                    <h3>MPU6050传感器套件</h3>
-                    <p>包含传感器模块、杜邦线、教程资料</p>
-                    <div class="product-price">¥35</div>
-                    <button class="btn btn-primary btn-buy" data-product="MPU6050传感器套件 - ¥35">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="kit">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=WS2812%20RGB%20LED%20strip%20light%20electronic%20project%20colorful&image_size=square" alt="WS2812灯带套件">
-                    <div class="product-badge kit">材料包</div>
-                </div>
-                <div class="product-info">
-                    <h3>WS2812 RGB灯带套件</h3>
-                    <p>5050RGB灯珠，支持多种灯光效果</p>
-                    <div class="product-price">¥45</div>
-                    <button class="btn btn-primary btn-buy" data-product="WS2812 RGB灯带套件 - ¥45">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="code">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=software%20code%20programming%20STM32%20project%20files%20documentation%20dark&image_size=square" alt="STM32源码合集">
-                    <div class="product-badge code">纯代码</div>
-                    <div class="product-badge value">超值</div>
-                </div>
-                <div class="product-info">
-                    <h3>STM32源码合集</h3>
-                    <p>包含所有视频配套源码，持续更新</p>
-                    <div class="product-price">¥99</div>
-                    <button class="btn btn-primary btn-buy" data-product="STM32源码合集 - ¥99">立即购买</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-category="code">
-                <div class="product-image">
-                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=embedded%20RTOS%20FreeRTOS%20code%20architecture%20diagram%20professional&image_size=square" alt="FreeRTOS学习资料">
-                    <div class="product-badge code">纯代码</div>
-                </div>
-                <div class="product-info">
-                    <h3>FreeRTOS学习资料</h3>
-                    <p>FreeRTOS源码+教程文档+实验例程</p>
-                    <div class="product-price">¥79</div>
-                    <button class="btn btn-primary btn-buy" data-product="FreeRTOS学习资料 - ¥79">立即购买</button>
-                </div>
+        <div class="products-grid" id="productsGrid">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>加载中...</span>
             </div>
         </div>
 
@@ -176,6 +107,106 @@
         </div>
     </footer>
 
-    <script src="script.js?v=6.0"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategories();
+            loadProducts();
+
+            document.getElementById('searchBtn').addEventListener('click', searchProducts);
+            document.getElementById('searchInput').addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    searchProducts();
+                }
+            });
+        });
+
+        async function loadCategories() {
+            try {
+                const response = await fetch('http://localhost:3001/api/categories');
+                const categories = await response.json();
+                const tabsContainer = document.getElementById('categoryTabs');
+                
+                tabsContainer.innerHTML = '';
+                
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tab-btn' + (cat.id === 'all' ? ' active' : '');
+                    btn.dataset.tab = cat.id;
+                    btn.innerHTML = `<i class="fas ${cat.icon}"></i> ${cat.name}`;
+                    btn.addEventListener('click', () => filterByCategory(cat.id));
+                    tabsContainer.appendChild(btn);
+                });
+            } catch (error) {
+                console.log('加载分类失败:', error);
+            }
+        }
+
+        async function loadProducts(category = 'all', keyword = '') {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><span>加载中...</span></div>';
+
+            try {
+                let url = 'http://localhost:3001/api/products';
+                const params = [];
+                if (category && category !== 'all') params.push(`category=${category}`);
+                if (keyword) params.push(`keyword=${encodeURIComponent(keyword)}`);
+                if (params.length > 0) url += '?' + params.join('&');
+
+                const response = await fetch(url);
+                const products = await response.json();
+                
+                if (products.length === 0) {
+                    grid.innerHTML = '<div class="no-products"><i class="fas fa-search"></i><p>暂无匹配的商品</p></div>';
+                    return;
+                }
+
+                grid.innerHTML = products.map(product => `
+                    <div class="product-card" data-category="${product.category}">
+                        <div class="product-image">
+                            <img src="${product.image}" alt="${product.name}">
+                            ${product.isHot ? '<div class="product-badge hot">热销</div>' : ''}
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="product-desc">${product.description}</p>
+                            <div class="product-price-row">
+                                <span class="product-price">¥${product.price}</span>
+                                ${product.originalPrice > product.price ? `<span class="product-original-price">¥${product.originalPrice}</span>` : ''}
+                            </div>
+                            <div class="product-meta">
+                                <span>库存: ${product.stock}</span>
+                                <span>已售: ${product.sold}</span>
+                            </div>
+                            <button class="btn btn-primary btn-buy" data-product="${product.name} - ¥${product.price}">立即购买</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                document.querySelectorAll('.btn-buy').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const productName = this.getAttribute('data-product');
+                        alert('已选择：' + productName + '\n\n请通过以下方式购买：\n1. 点击闲鱼链接购买\n2. 添加微信：li28430132\n3. 电话联系：16627878630');
+                    });
+                });
+            } catch (error) {
+                console.log('加载商品失败:', error);
+                grid.innerHTML = '<div class="no-products"><i class="fas fa-server"></i><p>无法连接服务器</p></div>';
+            }
+        }
+
+        function filterByCategory(category) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-tab="${category}"]`).classList.add('active');
+            
+            const keyword = document.getElementById('searchInput').value;
+            loadProducts(category, keyword);
+        }
+
+        function searchProducts() {
+            const keyword = document.getElementById('searchInput').value;
+            const activeCategory = document.querySelector('.tab-btn.active').dataset.tab;
+            loadProducts(activeCategory, keyword);
+        }
+    </script>
 </body>
 </html>

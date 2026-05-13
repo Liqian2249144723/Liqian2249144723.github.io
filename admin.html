@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理 - 原形工坊</title>
+    <link rel="stylesheet" href="styles.css?v=7.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .admin-sidebar {
+            width: 250px;
+            background: rgba(20, 20, 35, 0.95);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+        }
+
+        .admin-sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-sidebar .nav-menu {
+            list-style: none;
+        }
+
+        .admin-sidebar .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .admin-sidebar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-sidebar .nav-link:hover,
+        .admin-sidebar .nav-link.active {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+        }
+
+        .admin-sidebar .nav-link i {
+            width: 20px;
+        }
+
+        .admin-main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info span {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: rgba(255, 106, 106, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 106, 106, 0.3);
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 106, 106, 0.3);
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-card .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 13px;
+            color: #888;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 25px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn-add {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .table th {
+            font-size: 13px;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .table td {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .table img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-right: 5px;
+        }
+
+        .btn-edit {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+        }
+
+        .btn-edit:hover {
+            background: rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-delete {
+            background: rgba(255, 106, 106, 0.2);
+            color: #ff6b6b;
+        }
+
+        .btn-delete:hover {
+            background: rgba(255, 106, 106, 0.3);
+        }
+
+        .btn-reply {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .btn-reply:hover {
+            background: rgba(46, 204, 113, 0.3);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .btn-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close:hover {
+            background: rgba(255, 106, 106, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #ccc;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d9ff;
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-check input {
+            width: auto;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .login-box .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: #00d9ff;
+            margin-bottom: 30px;
+        }
+
+        .login-box h2 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .login-box p {
+            color: #888;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .login-box .btn-submit {
+            margin-top: 20px;
+        }
+
+        .login-box .switch-link {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        .login-box .switch-link a {
+            color: #00d9ff;
+            text-decoration: none;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge.hot {
+            background: linear-gradient(135deg, #ff6b6b, #ff4757);
+        }
+
+        .badge.replied {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .badge.pending {
+            background: linear-gradient(135deg, #ffa502, #ff6348);
+        }
+
+        .reply-content {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 3px solid #2ecc71;
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #2ecc71;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 14px;
+            width: 250px;
+            margin-bottom: 20px;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #00d9ff;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+
+        @media (max-width: 900px) {
+            .admin-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .admin-main {
+                margin-left: 0;
+            }
+
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-microchip"></i>
+                <span>原形工坊</span>
+            </div>
+            <h2>管理员登录</h2>
+            <p>请输入账号密码登录后台管理系统</p>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="loginUsername" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="loginPassword" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-submit">登录</button>
+            </form>
+            <p class="switch-link">
+                还没有账号？ <a href="#" id="showRegister">立即注册</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="registerPage" class="login-container" style="display: none;">
+        <div class="login-box">
+            <div class="logo">
+                <i class="fas fa-microchip"></i>
+                <span>原形工坊</span>
+            </div>
+            <h2>用户注册</h2>
+            <p>创建新账号</p>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" id="regUsername" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label>邮箱</label>
+                    <input type="email" id="regEmail" placeholder="请输入邮箱" required>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" id="regPassword" placeholder="请输入密码" required>
+                </div>
+                <button type="submit" class="btn-submit">注册</button>
+            </form>
+            <p class="switch-link">
+                已有账号？ <a href="#" id="showLogin">立即登录</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="adminPanel" style="display: none;">
+        <div class="admin-container">
+            <aside class="admin-sidebar">
+                <div class="logo">
+                    <i class="fas fa-microchip"></i>
+                    <span>后台管理</span>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>数据概览</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#products" class="nav-link" data-page="products">
+                            <i class="fas fa-box"></i>
+                            <span>商品管理</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#messages" class="nav-link" data-page="messages">
+                            <i class="fas fa-comments"></i>
+                            <span>留言管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <main class="admin-main">
+                <header class="admin-header">
+                    <h1 id="pageTitle">数据概览</h1>
+                    <div class="user-info">
+                        <span>欢迎, <span id="currentUser">admin</span></span>
+                        <button class="btn-logout" onclick="logout()">退出登录</button>
+                    </div>
+                </header>
+
+                <div id="dashboardPage">
+                    <div class="dashboard-cards">
+                        <div class="stat-card">
+                            <div class="stat-value" id="statProducts">0</div>
+                            <div class="stat-label">商品总数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statSold">0</div>
+                            <div class="stat-label">累计销量</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statStock">0</div>
+                            <div class="stat-label">库存总量</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="statMessages">0</div>
+                            <div class="stat-label">待处理留言</div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>最近留言</h2>
+                            <a href="#messages" class="btn-add" onclick="showPage('messages')">查看全部</a>
+                        </div>
+                        <table class="table" id="recentMessages">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>留言内容</th>
+                                    <th>状态</th>
+                                    <th>时间</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="productsPage" style="display: none;">
+                    <input type="text" class="search-box" id="productSearch" placeholder="搜索商品...">
+                    <div class="section-header">
+                        <h2>商品列表</h2>
+                        <button class="btn-add" onclick="showAddProductModal()">添加商品</button>
+                    </div>
+                    <table class="table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>图片</th>
+                                <th>商品名称</th>
+                                <th>价格</th>
+                                <th>库存</th>
+                                <th>销量</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="messagesPage" style="display: none;">
+                    <div class="section-header">
+                        <h2>留言管理</h2>
+                    </div>
+                    <table class="table" id="messagesTable">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>联系方式</th>
+                                <th>留言内容</th>
+                                <th>回复状态</th>
+                                <th>时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="productModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modalTitle">添加商品</h3>
+                <button class="btn-close" onclick="closeModal()">×</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>商品名称</label>
+                    <input type="text" id="productName" placeholder="请输入商品名称" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>价格</label>
+                        <input type="number" id="productPrice" placeholder="请输入价格" required>
+                    </div>
+                    <div class="form-group">
+                        <label>原价</label>
+                        <input type="number" id="productOriginalPrice" placeholder="请输入原价">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>分类</label>
+                    <select id="productCategory">
+                        <option value="development">开发板</option>
+                        <option value="sensor">传感器</option>
+                        <option value="display">显示屏</option>
+                        <option value="kit">学习套件</option>
+                        <option value="actuator">执行器</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>库存</label>
+                        <input type="number" id="productStock" placeholder="请输入库存数量" value="100">
+                    </div>
+                    <div class="form-group">
+                        <label>是否热销</label>
+                        <div class="form-check">
+                            <input type="checkbox" id="productIsHot">
+                            <label for="productIsHot">热销商品</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>商品描述</label>
+                    <textarea id="productDesc" placeholder="请输入商品描述"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="replyModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>回复留言</h3>
+                <button class="btn-close" onclick="closeReplyModal()">×</button>
+            </div>
+            <div id="replyMessageContent" style="margin-bottom: 20px; color: #ccc; font-size: 14px;"></div>
+            <form id="replyForm">
+                <input type="hidden" id="replyMessageId">
+                <div class="form-group">
+                    <label>回复内容</label>
+                    <textarea id="replyContent" placeholder="请输入回复内容..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit">发送回复</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'dashboard';
+        let editingProduct = null;
+        let replyingMessageId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLogin();
+        });
+
+        async function checkLogin() {
+            const savedUser = localStorage.getItem('adminUser');
+            if (savedUser) {
+                showAdminPanel(JSON.parse(savedUser));
+            }
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            const response = await fetch('http://localhost:3001/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                localStorage.setItem('adminUser', JSON.stringify(data.user));
+                showAdminPanel(data.user);
+            } else {
+                alert(data.message);
+            }
+        });
+
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            const response = await fetch('http://localhost:3001/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, email })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                alert('注册成功，请登录');
+                document.getElementById('registerPage').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'flex';
+            } else {
+                alert(data.message);
+            }
+        });
+
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'flex';
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        });
+
+        function showAdminPanel(user) {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('registerPage').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('currentUser').textContent = user.username;
+            loadDashboard();
+        }
+
+        function logout() {
+            localStorage.removeItem('adminUser');
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = link.dataset.page;
+                showPage(page);
+            });
+        });
+
+        function showPage(page) {
+            currentPage = page;
+            
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelector(`[data-page="${page}"]`).classList.add('active');
+
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('productsPage').style.display = 'none';
+            document.getElementById('messagesPage').style.display = 'none';
+
+            if (page === 'dashboard') {
+                document.getElementById('pageTitle').textContent = '数据概览';
+                document.getElementById('dashboardPage').style.display = 'block';
+                loadDashboard();
+            } else if (page === 'products') {
+                document.getElementById('pageTitle').textContent = '商品管理';
+                document.getElementById('productsPage').style.display = 'block';
+                loadProducts();
+            } else if (page === 'messages') {
+                document.getElementById('pageTitle').textContent = '留言管理';
+                document.getElementById('messagesPage').style.display = 'block';
+                loadMessages();
+            }
+        }
+
+        async function loadDashboard() {
+            const response = await fetch('http://localhost:3001/api/stats');
+            const stats = await response.json();
+
+            document.getElementById('statProducts').textContent = stats.totalProducts;
+            document.getElementById('statSold').textContent = stats.totalSold;
+            document.getElementById('statStock').textContent = stats.totalStock;
+            document.getElementById('statMessages').textContent = stats.pendingMessages;
+
+            await loadRecentMessages();
+        }
+
+        async function loadRecentMessages() {
+            const response = await fetch('http://localhost:3001/api/messages?limit=5');
+            const data = await response.json();
+            const tbody = document.querySelector('#recentMessages tbody');
+            tbody.innerHTML = '';
+
+            data.data.forEach(msg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${msg.name}</td>
+                    <td>${msg.content.substring(0, 30)}${msg.content.length > 30 ? '...' : ''}</td>
+                    <td><span class="badge ${msg.replied ? 'replied' : 'pending'}">${msg.replied ? '已回复' : '待回复'}</span></td>
+                    <td>${formatDate(msg.createdAt)}</td>
+                    <td>
+                        ${!msg.replied ? `<button class="btn-action btn-reply" onclick="showReplyModal(${msg.id}, '${msg.content}')">回复</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function loadProducts() {
+            const keyword = document.getElementById('productSearch').value;
+            const url = keyword ? `http://localhost:3001/api/products?keyword=${encodeURIComponent(keyword)}` : 'http://localhost:3001/api/products';
+            const response = await fetch(url);
+            const products = await response.json();
+            const tbody = document.querySelector('#productsTable tbody');
+            tbody.innerHTML = '';
+
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="no-data">暂无商品</td></tr>';
+                return;
+            }
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${product.image}" alt="${product.name}"></td>
+                    <td>${product.name}</td>
+                    <td>¥${product.price} <span style="color: #666; text-decoration: line-through;">¥${product.originalPrice}</span></td>
+                    <td>${product.stock}</td>
+                    <td>${product.sold}</td>
+                    <td>${product.isHot ? '<span class="badge hot">热销</span>' : '-'}</td>
+                    <td>
+                        <button class="btn-action btn-edit" onclick="showEditProductModal(${product.id})">编辑</button>
+                        <button class="btn-action btn-delete" onclick="deleteProduct(${product.id})">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function loadMessages() {
+            const response = await fetch('http://localhost:3001/api/messages');
+            const data = await response.json();
+            const tbody = document.querySelector('#messagesTable tbody');
+            tbody.innerHTML = '';
+
+            if (data.data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="no-data">暂无留言</td></tr>';
+                return;
+            }
+
+            data.data.forEach(msg => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${msg.name}</td>
+                    <td>
+                        <div>📧 ${msg.email || '-'}</div>
+                        <div>📱 ${msg.phone || '-'}</div>
+                    </td>
+                    <td>
+                        ${msg.content}
+                        ${msg.replied ? `<div class="reply-content">💬 ${msg.reply}</div>` : ''}
+                    </td>
+                    <td><span class="badge ${msg.replied ? 'replied' : 'pending'}">${msg.replied ? '已回复' : '待回复'}</span></td>
+                    <td>${formatDate(msg.createdAt)}</td>
+                    <td>
+                        ${!msg.replied ? `<button class="btn-action btn-reply" onclick="showReplyModal(${msg.id}, '${msg.content}')">回复</button>` : ''}
+                        <button class="btn-action btn-delete" onclick="deleteMessage(${msg.id})">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('productSearch').addEventListener('input', () => {
+            loadProducts();
+        });
+
+        function showAddProductModal() {
+            editingProduct = null;
+            document.getElementById('modalTitle').textContent = '添加商品';
+            document.getElementById('productForm').reset();
+            document.getElementById('productId').value = '';
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        async function showEditProductModal(productId) {
+            const response = await fetch(`http://localhost:3001/api/products/${productId}`);
+            editingProduct = await response.json();
+
+            document.getElementById('modalTitle').textContent = '编辑商品';
+            document.getElementById('productId').value = editingProduct.id;
+            document.getElementById('productName').value = editingProduct.name;
+            document.getElementById('productPrice').value = editingProduct.price;
+            document.getElementById('productOriginalPrice').value = editingProduct.originalPrice;
+            document.getElementById('productCategory').value = editingProduct.category;
+            document.getElementById('productStock').value = editingProduct.stock;
+            document.getElementById('productIsHot').checked = editingProduct.isHot;
+            document.getElementById('productDesc').value = editingProduct.description;
+
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+            editingProduct = null;
+        }
+
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const productData = {
+                name: document.getElementById('productName').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                originalPrice: parseFloat(document.getElementById('productOriginalPrice').value) || parseFloat(document.getElementById('productPrice').value),
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value) || 100,
+                isHot: document.getElementById('productIsHot').checked,
+                description: document.getElementById('productDesc').value
+            };
+
+            if (editingProduct) {
+                await fetch(`http://localhost:3001/api/products/${editingProduct.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            } else {
+                await fetch('http://localhost:3001/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(productData)
+                });
+            }
+
+            closeModal();
+            if (currentPage === 'products') {
+                loadProducts();
+            } else if (currentPage === 'dashboard') {
+                loadDashboard();
+            }
+        });
+
+        async function deleteProduct(productId) {
+            if (!confirm('确定要删除这个商品吗？')) return;
+
+            await fetch(`http://localhost:3001/api/products/${productId}`, {
+                method: 'DELETE'
+            });
+
+            if (currentPage === 'products') {
+                loadProducts();
+            } else if (currentPage === 'dashboard') {
+                loadDashboard();
+            }
+        }
+
+        function showReplyModal(messageId, content) {
+            replyingMessageId = messageId;
+            document.getElementById('replyMessageContent').innerHTML = `<strong>原留言：</strong>${content}`;
+            document.getElementById('replyContent').value = '';
+            document.getElementById('replyModal').classList.add('active');
+        }
+
+        function closeReplyModal() {
+            document.getElementById('replyModal').classList.remove('active');
+            replyingMessageId = null;
+        }
+
+        document.getElementById('replyForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const replyContent = document.getElementById('replyContent').value;
+            await fetch(`http://localhost:3001/api/messages/${replyingMessageId}/reply`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ reply: replyContent })
+            });
+
+            closeReplyModal();
+            loadDashboard();
+            if (currentPage === 'messages') {
+                loadMessages();
+            }
+        });
+
+        async function deleteMessage(messageId) {
+            if (!confirm('确定要删除这条留言吗？')) return;
+
+            await fetch(`http://localhost:3001/api/messages/${messageId}`, {
+                method: 'DELETE'
+            });
+
+            loadDashboard();
+            if (currentPage === 'messages') {
+                loadMessages();
+            }
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    </script>
+</body>
+</html>

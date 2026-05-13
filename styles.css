@@ -263,10 +263,14 @@ body {
 }
 
 .tab-btn.active {
-    background: linear-gradient(135deg, #00d9ff, #00ff88);
-    color: #000;
-    border-color: transparent;
-}
+        background: linear-gradient(135deg, #00d9ff, #00ff88);
+        color: #000;
+        border-color: transparent;
+    }
+
+    .tab-btn i {
+        margin-right: 6px;
+    }
 
 .products-grid {
     display: grid;
@@ -362,6 +366,101 @@ body {
     font-weight: 700;
     color: #00d9ff;
     margin-bottom: 12px;
+}
+
+.product-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.product-original-price {
+    font-size: 14px;
+    color: #666;
+    text-decoration: line-through;
+}
+
+.product-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 12px;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.search-input {
+    padding: 12px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    color: #fff;
+    font-size: 14px;
+    width: 300px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #00d9ff;
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-btn {
+    padding: 12px 20px;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #00d9ff, #00ff88);
+    border: none;
+    color: #000;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+}
+
+.loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: #888;
+    font-size: 16px;
+}
+
+.loading i {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+    color: #00d9ff;
+}
+
+.no-products {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: #888;
+    font-size: 16px;
+}
+
+.no-products i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: block;
+    color: #00d9ff;
 }
 
 .purchase-guide {
