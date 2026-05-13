@@ -55,6 +55,16 @@ body {
     gap: 25px;
 }
 
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: #00d9ff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+}
+
 .nav-link {
     text-decoration: none;
     color: #ccc;
@@ -986,6 +996,27 @@ body {
 @media (max-width: 600px) {
     .nav-menu {
         display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(15, 15, 26, 0.98);
+        padding: 20px;
+        gap: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-menu li {
+        margin-bottom: 0;
+    }
+
+    .mobile-menu-btn {
+        display: block;
     }
 
     .nav-container {

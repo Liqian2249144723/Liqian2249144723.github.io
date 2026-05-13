@@ -221,3 +221,8 @@ function updateContactInfo(contact) {
         if (label === '电话') btn.setAttribute('data-copy', contact.phone);
     });
 }
+
+function toggleMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    navMenu.classList.toggle('active');
+}
