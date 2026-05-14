@@ -1099,6 +1099,7 @@
                 bindNavEvents();
                 showPage('products');
             } else {
+                bindNavEvents();
                 loadDashboard();
             }
         }
@@ -1607,13 +1608,19 @@
 
         async function loadOrders() {
             const keyword = document.getElementById('orderSearch').value;
-            const user = JSON.parse(localStorage.getItem('adminUser') || '{}');
-            const email = user.username ? user.username + '@example.com' : '';
             
-            const response = await fetch(`${BASE_URL}/api/orders?email=${encodeURIComponent(email)}`, {
+            console.log('=== 订单查询调试 ===');
+            console.log('用户角色:', currentUserRole);
+            console.log('搜索关键词:', keyword);
+            console.log('认证头部:', getAuthHeaders());
+            
+            const response = await fetch(`${BASE_URL}/api/orders`, {
                 headers: getAuthHeaders()
             });
+            console.log('响应状态:', response.status);
             let orders = await response.json();
+            console.log('获取到的订单数量:', orders.length);
+            console.log('订单数据:', orders);
 
             if (keyword) {
                 const kw = keyword.toLowerCase();
@@ -1650,15 +1657,30 @@
                 row.classList.add(order.status === 'pending' ? 'pending-row' : '');
                 
                 let downloadInfo = '';
-                if (order.status === 'completed' && order.panLink) {
-                    downloadInfo = `
-                        <div style="margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1); border-radius: 8px;">
+                if (order.status === 'completed') {
+                    downloadInfo = '<div style="margin-top: 10px; padding: 10px; background: rgba(46, 204, 113, 0.1); border-radius: 8px;">';
+                    
+                    if (order.panLink) {
+                        downloadInfo += `
                             <div style="margin-bottom: 5px;">
-                                <a href="${order.panLink}" target="_blank" style="color: #00d9ff; font-size: 12px; word-break: break-all;">${order.panLink}</a>
+                                <a href="${order.panLink}" target="_blank" style="color: #00d9ff; font-size: 12px; word-break: break-all;">📥 ${order.panLink}</a>
                             </div>
-                            <div style="font-size: 12px; color: #00ff88;">提取码：${order.panPassword || '无'}</div>
-                        </div>
-                    `;
+                            <div style="font-size: 12px; color: #00ff88;">🔑 提取码：${order.panPassword || '无'}</div>
+                        `;
+                    }
+                    
+                    if (order.downloadLinks && order.downloadLinks.length > 0) {
+                        downloadInfo += '<div style="margin-top: 8px; font-size: 12px; color: #ccc;">其他下载链接：</div>';
+                        order.downloadLinks.forEach((file, idx) => {
+                            downloadInfo += `
+                                <div style="margin-top: 4px;">
+                                    <a href="${file.url}" target="_blank" style="color: #00d9ff; font-size: 12px;">${idx + 1}. ${file.name}</a>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    downloadInfo += '</div>';
                 }
                 
                 let actionCell = '';
@@ -1672,7 +1694,7 @@
                 } else {
                     actionCell = `
                         ${order.status === 'pending' ? '<span style="color: #ffa502; font-size: 12px;">等待确认...</span>' : ''}
-                        ${order.status === 'completed' ? `<span style="color: #2ecc71; font-size: 12px;">已完成${downloadInfo}</span>` : ''}
+                        ${order.status === 'completed' ? `<span style="color: #2ecc71; font-size: 12px;">已完成</span>${downloadInfo}` : ''}
                         ${order.status === 'cancelled' ? '<span style="color: #ff6b6b; font-size: 12px;">已取消</span>' : ''}
                     `;
                 }
@@ -1713,19 +1735,30 @@
         }
 
         async function confirmOrder(orderId) {
+            console.log('确认订单ID:', orderId);
+            
             if (!confirm('确认用户已付款？确认后将开放下载链接。')) return;
 
-            const response = await fetch(`${BASE_URL}/api/orders/${orderId}/confirm`, {
-                method: 'PUT',
-                headers: getAuthHeaders()
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                alert('订单已确认，下载链接已开放');
-                loadOrders();
-            } else {
-                alert(data.message || '操作失败');
+            try {
+                const response = await fetch(`${BASE_URL}/api/orders/${orderId}/confirm`, {
+                    method: 'PUT',
+                    headers: getAuthHeaders()
+                });
+                
+                console.log('响应状态:', response.status);
+                
+                const data = await response.json();
+                console.log('响应数据:', data);
+                
+                if (data.success) {
+                    alert('订单已确认，下载链接已开放');
+                    loadOrders();
+                } else {
+                    alert(data.message || '操作失败');
+                }
+            } catch (error) {
+                console.error('确认订单失败:', error);
+                alert('确认订单失败，请查看控制台');
             }
         }
 

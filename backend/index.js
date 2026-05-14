@@ -744,14 +744,28 @@ app.get('/api/orders', (req, res) => {
     const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
     const user = checkUser(req, res);
     
+    console.log('=== 订单查询调试 ===');
+    console.log('请求参数 email:', email);
+    console.log('当前用户:', user ? `ID:${user.id}, 用户名:${user.username}, 角色:${user.role}` : '未登录');
+    console.log('所有订单数量:', orders.length);
+    
     if (!user) {
         return res.status(403).json({ message: '需要登录' });
     }
     
     if (user.role === 'admin') {
+        console.log('管理员查询，返回所有订单');
         res.json(orders);
     } else {
-        const userOrders = orders.filter(o => o.email === email || (!email && o.userId === user.id));
+        const userOrders = orders.filter(o => 
+            o.email === email || 
+            (o.userId !== undefined && o.userId !== null && o.userId === user.id) ||
+            (o.userId === undefined && o.email === (user.username + '@example.com'))
+        );
+        console.log('普通用户查询，匹配到', userOrders.length, '个订单');
+        console.log('用户ID:', user.id);
+        console.log('查询email:', email);
+        console.log('用户邮箱:', user.username + '@example.com');
         res.json(userOrders);
     }
 });
