@@ -10,10 +10,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const productCards = document.querySelectorAll('.product-card');
     const contactButtons = document.querySelectorAll('.btn-contact');
     const messageForm = document.querySelector('.message-form');
+    const themeToggle = document.getElementById('theme-toggle');
 
     console.log('网站加载完成！');
 
     initAPICalls();
+
+    initThemeToggle();
 
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
@@ -134,6 +137,23 @@ function initAPICalls() {
     fetchStats();
     fetchProducts();
     fetchContact();
+}
+
+function initThemeToggle() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
+
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+    themeToggle.addEventListener('click', function() {
+        const isLight = document.body.classList.toggle('light-theme');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        themeToggle.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
 }
 
 function fetchStats() {
