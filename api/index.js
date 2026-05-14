@@ -1,13 +1,14 @@
 const express = require('express');
-const cors = require('cors');
-const fs = require('fs');
-const path = require('path');
+const next = require('next');
 
 const app = express();
+const port = parseInt(process.env.PORT, 10) || 3000;
+const dev = process.env.NODE_ENV !== 'production';
+const nextApp = next({ dev });
+const handle = nextApp.getRequestHandler();
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname, '../')));
+const fs = require('fs');
+const path = require('path');
 
 const dataDir = path.join(__dirname, '../backend/data');
 if (!fs.existsSync(dataDir)) {
@@ -296,483 +297,397 @@ function checkAdmin(req) {
     return null;
 }
 
-app.post('/api/login', (req, res) => {
-    const { username, password } = req.body;
-    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
-    const user = users.find(u => u.username === username && u.password === password);
+module.exports = (req, res) => {
+    app.use(express.json());
     
-    if (user) {
-        const token = generateToken();
-        const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
-        tokens.push({ token, userId: user.id, createdAt: new Date().toISOString() });
-        fs.writeFileSync(tokensFilePath, JSON.stringify(tokens, null, 2));
+    if (req.method === 'POST' && req.url === '/api/login') {
+        const { username, password } = req.body;
+        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        const user = users.find(u => u.username === username && u.password === password);
         
-        res.json({ 
-            success: true, 
-            message: '登录成功',
-            user: { id: user.id, username: user.username, role: user.role },
-            token: token
-        });
-    } else {
-        res.json({ success: false, message: '用户名或密码错误' });
-    }
-});
-
-app.post('/api/register', (req, res) => {
-    const { username, password, email } = req.body;
-    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
-    
-    if (users.find(u => u.username === username)) {
-        return res.json({ success: false, message: '用户名已存在' });
-    }
-    
-    const newUser = {
-        id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
-        username,
-        password,
-        email,
-        role: 'user',
-        createdAt: new Date().toISOString()
-    };
-    
-    users.push(newUser);
-    fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
-    res.json({ success: true, message: '注册成功', user: newUser });
-});
-
-app.get('/api/products', (req, res) => {
-    const category = req.query.category;
-    const keyword = req.query.keyword;
-    let products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    
-    if (category && category !== 'all') {
-        products = products.filter(p => p.category === category);
-    }
-    
-    if (keyword) {
-        const kw = keyword.toLowerCase();
-        products = products.filter(p => 
-            p.name.toLowerCase().includes(kw) || 
-            p.description.toLowerCase().includes(kw)
-        );
-    }
-    
-    res.json(products);
-});
-
-app.get('/api/products/:id', (req, res) => {
-    const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    const product = products.find(p => p.id === parseInt(req.params.id));
-    
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ message: '商品不存在' });
-    }
-});
-
-app.post('/api/products', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ message: '需要管理员权限' });
-    }
-    
-    const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    const newProduct = {
-        id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-        name: req.body.name,
-        price: req.body.price,
-        originalPrice: req.body.originalPrice || req.body.price,
-        category: req.body.category || 'other',
-        description: req.body.description || '',
-        image: req.body.image || '',
-        stock: req.body.stock || 100,
-        sold: 0,
-        isHot: req.body.isHot || false
-    };
-    
-    products.push(newProduct);
-    fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
-    res.status(201).json(newProduct);
-});
-
-app.put('/api/products/:id', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ message: '需要管理员权限' });
-    }
-    
-    const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    const index = products.findIndex(p => p.id === parseInt(req.params.id));
-    
-    if (index !== -1) {
-        products[index] = { ...products[index], ...req.body };
-        fs.writeFileSync(productsFilePath, JSON.stringify(products, null, 2));
-        res.json(products[index]);
-    } else {
-        res.status(404).json({ message: '商品不存在' });
-    }
-});
-
-app.delete('/api/products/:id', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ message: '需要管理员权限' });
-    }
-    
-    const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    const filtered = products.filter(p => p.id !== parseInt(req.params.id));
-    
-    if (filtered.length !== products.length) {
-        fs.writeFileSync(productsFilePath, JSON.stringify(filtered, null, 2));
-        res.json({ message: '删除成功' });
-    } else {
-        res.status(404).json({ message: '商品不存在' });
-    }
-});
-
-app.post('/api/messages', (req, res) => {
-    const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
-    const newMessage = {
-        id: messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1,
-        name: req.body.name,
-        email: req.body.email,
-        phone: req.body.phone,
-        content: req.body.content,
-        createdAt: new Date().toISOString(),
-        replied: false,
-        reply: ''
-    };
-    
-    messages.push(newMessage);
-    fs.writeFileSync(messagesFilePath, JSON.stringify(messages, null, 2));
-    res.status(201).json({ success: true, message: '留言成功！我会尽快回复您', data: newMessage });
-});
-
-app.get('/api/messages', (req, res) => {
-    const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    
-    const paginatedMessages = messages.slice(start, end);
-    res.json({
-        data: paginatedMessages,
-        total: messages.length,
-        page,
-        totalPages: Math.ceil(messages.length / limit)
-    });
-});
-
-app.put('/api/messages/:id/reply', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ message: '需要管理员权限' });
-    }
-    
-    const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
-    const index = messages.findIndex(m => m.id === parseInt(req.params.id));
-    
-    if (index !== -1) {
-        messages[index].replied = true;
-        messages[index].reply = req.body.reply;
-        fs.writeFileSync(messagesFilePath, JSON.stringify(messages, null, 2));
-        res.json({ success: true, message: '回复成功', data: messages[index] });
-    } else {
-        res.status(404).json({ message: '留言不存在' });
-    }
-});
-
-app.delete('/api/messages/:id', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ message: '需要管理员权限' });
-    }
-    
-    const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
-    const filtered = messages.filter(m => m.id !== parseInt(req.params.id));
-    
-    if (filtered.length !== messages.length) {
-        fs.writeFileSync(messagesFilePath, JSON.stringify(filtered, null, 2));
-        res.json({ message: '删除成功' });
-    } else {
-        res.status(404).json({ message: '留言不存在' });
-    }
-});
-
-app.get('/api/contact', (req, res) => {
-    res.json({
-        phone: '16627878630',
-        qq: '2249144723',
-        wechat: 'li28430132',
-        address: '江苏 常州',
-        workTime: '9:00-18:00（周一到周六）'
-    });
-});
-
-app.get('/api/stats', (req, res) => {
-    const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
-    const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
-    
-    const totalSold = products.reduce((sum, p) => sum + p.sold, 0);
-    const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
-    
-    res.json({
-        years: 3,
-        videos: 100,
-        students: 5000,
-        projects: 50,
-        totalProducts: products.length,
-        totalSold,
-        totalStock,
-        pendingMessages: messages.filter(m => !m.replied).length,
-        totalMessages: messages.length
-    });
-});
-
-app.get('/api/categories', (req, res) => {
-    res.json([
-        { id: 'all', name: '全部商品', icon: 'fa-box' },
-        { id: 'development', name: '开发板', icon: 'fa-microchip' },
-        { id: 'sensor', name: '传感器', icon: 'fa-thermometer-half' },
-        { id: 'display', name: '显示屏', icon: 'fa-monitor' },
-        { id: 'kit', name: '学习套件', icon: 'fa-box-open' },
-        { id: 'actuator', name: '执行器', icon: 'fa-cog' }
-    ]);
-});
-
-app.get('/api/digital-products', (req, res) => {
-    const category = req.query.category;
-    const keyword = req.query.keyword;
-    let products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    
-    if (category && category !== 'all') {
-        products = products.filter(p => p.category === category);
-    }
-    
-    if (keyword) {
-        const kw = keyword.toLowerCase();
-        products = products.filter(p => 
-            p.name.toLowerCase().includes(kw) || 
-            p.description.toLowerCase().includes(kw)
-        );
-    }
-    
-    res.json(products);
-});
-
-app.get('/api/digital-products/:id', (req, res) => {
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const product = products.find(p => p.id === parseInt(req.params.id));
-    
-    if (product) {
-        res.json(product);
-    } else {
-        res.status(404).json({ message: '数字商品不存在' });
-    }
-});
-
-app.post('/api/digital-products', (req, res) => {
-    const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
-    
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const newProduct = {
-        id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-        name,
-        price: parseFloat(price),
-        originalPrice: parseFloat(originalPrice) || parseFloat(price),
-        category,
-        panLink: panLink || '',
-        panPassword: panPassword || '',
-        downloads: parseInt(downloads) || 0,
-        isHot: isHot || false,
-        description: description || '',
-        files: files || []
-    };
-    
-    products.push(newProduct);
-    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
-    
-    res.json({ success: true, message: '数字商品添加成功', product: newProduct });
-});
-
-app.put('/api/digital-products/:id', (req, res) => {
-    const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
-    
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const index = products.findIndex(p => p.id === parseInt(req.params.id));
-    
-    if (index === -1) {
-        return res.status(404).json({ success: false, message: '数字商品不存在' });
-    }
-    
-    products[index] = {
-        ...products[index],
-        name: name || products[index].name,
-        price: price ? parseFloat(price) : products[index].price,
-        originalPrice: originalPrice ? parseFloat(originalPrice) : products[index].originalPrice,
-        category: category || products[index].category,
-        panLink: panLink || products[index].panLink,
-        panPassword: panPassword || products[index].panPassword,
-        downloads: downloads ? parseInt(downloads) : products[index].downloads,
-        isHot: isHot !== undefined ? isHot : products[index].isHot,
-        description: description || products[index].description,
-        files: files || products[index].files
-    };
-    
-    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
-    
-    res.json({ success: true, message: '数字商品更新成功', product: products[index] });
-});
-
-app.delete('/api/digital-products/:id', (req, res) => {
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const filtered = products.filter(p => p.id !== parseInt(req.params.id));
-    
-    if (filtered.length === products.length) {
-        return res.status(404).json({ success: false, message: '数字商品不存在' });
-    }
-    
-    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(filtered, null, 2));
-    
-    res.json({ success: true, message: '数字商品删除成功' });
-});
-
-app.post('/api/orders', (req, res) => {
-    const { productId, email, buyerName, phone } = req.body;
-    
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const product = products.find(p => p.id === parseInt(productId));
-    
-    if (!product) {
-        return res.status(404).json({ success: false, message: '商品不存在' });
-    }
-    
-    const user = checkUser(req);
-    const userId = user ? user.id : null;
-    
-    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
-    const newOrder = {
-        id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
-        productId: product.id,
-        productName: product.name,
-        price: product.price,
-        buyerName,
-        email,
-        phone,
-        userId: userId,
-        status: 'pending',
-        downloadLinks: [],
-        panLink: '',
-        panPassword: '',
-        createdAt: new Date().toISOString(),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-    };
-    
-    orders.push(newOrder);
-    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
-    
-    res.json({
-        success: true,
-        message: '订单已创建，请完成支付',
-        order: newOrder,
-        paymentInfo: {
-            wechat: 'li28430132',
-            phone: '16627878630'
+        if (user) {
+            const token = generateToken();
+            const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+            tokens.push({ token, userId: user.id, createdAt: new Date().toISOString() });
+            fs.writeFileSync(tokensFilePath, JSON.stringify(tokens, null, 2));
+            
+            res.status(200).json({ 
+                success: true, 
+                message: '登录成功',
+                user: { id: user.id, username: user.username, role: user.role },
+                token: token
+            });
+        } else {
+            res.status(200).json({ success: false, message: '用户名或密码错误' });
         }
-    });
-});
-
-app.put('/api/orders/:id/confirm', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ success: false, message: '需要管理员权限' });
+        return;
     }
     
-    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
-    const index = orders.findIndex(o => o.id === parseInt(req.params.id));
-    
-    if (index === -1) {
-        return res.status(404).json({ success: false, message: '订单不存在' });
+    if (req.method === 'POST' && req.url === '/api/register') {
+        const { username, password, email } = req.body;
+        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        
+        if (users.find(u => u.username === username)) {
+            res.status(200).json({ success: false, message: '用户名已存在' });
+            return;
+        }
+        
+        const newUser = {
+            id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+            username,
+            password,
+            email,
+            role: 'user',
+            createdAt: new Date().toISOString()
+        };
+        
+        users.push(newUser);
+        fs.writeFileSync(usersFilePath, JSON.stringify(users, null, 2));
+        res.status(200).json({ success: true, message: '注册成功', user: newUser });
+        return;
     }
     
-    const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
-    const product = products.find(p => p.id === orders[index].productId);
-    
-    if (!product) {
-        return res.status(404).json({ success: false, message: '商品不存在' });
+    if (req.method === 'GET' && req.url.startsWith('/api/products')) {
+        const url = new URL(req.url, 'http://localhost');
+        const category = url.searchParams.get('category');
+        const keyword = url.searchParams.get('keyword');
+        let products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
+        
+        if (category && category !== 'all') {
+            products = products.filter(p => p.category === category);
+        }
+        
+        if (keyword) {
+            const kw = keyword.toLowerCase();
+            products = products.filter(p => 
+                p.name.toLowerCase().includes(kw) || 
+                p.description.toLowerCase().includes(kw)
+            );
+        }
+        
+        res.status(200).json(products);
+        return;
     }
     
-    orders[index].status = 'completed';
-    orders[index].downloadLinks = product.files;
-    orders[index].panLink = product.panLink || '';
-    orders[index].panPassword = product.panPassword || '';
-    
-    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
-    
-    product.downloads += 1;
-    fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
-    
-    res.json({
-        success: true,
-        message: '订单已确认，下载链接已激活',
-        order: orders[index]
-    });
-});
-
-app.put('/api/orders/:id/cancel', (req, res) => {
-    const admin = checkAdmin(req);
-    if (!admin) {
-        return res.status(403).json({ success: false, message: '需要管理员权限' });
+    if (req.method === 'GET' && req.url.startsWith('/api/digital-products')) {
+        const url = new URL(req.url, 'http://localhost');
+        const category = url.searchParams.get('category');
+        const keyword = url.searchParams.get('keyword');
+        let products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+        
+        if (category && category !== 'all') {
+            products = products.filter(p => p.category === category);
+        }
+        
+        if (keyword) {
+            const kw = keyword.toLowerCase();
+            products = products.filter(p => 
+                p.name.toLowerCase().includes(kw) || 
+                p.description.toLowerCase().includes(kw)
+            );
+        }
+        
+        res.status(200).json(products);
+        return;
     }
     
-    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
-    const index = orders.findIndex(o => o.id === parseInt(req.params.id));
-    
-    if (index === -1) {
-        return res.status(404).json({ success: false, message: '订单不存在' });
+    if (req.method === 'POST' && req.url === '/api/orders') {
+        const { productId, email, buyerName, phone } = req.body;
+        
+        const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+        const product = products.find(p => p.id === parseInt(productId));
+        
+        if (!product) {
+            res.status(404).json({ success: false, message: '商品不存在' });
+            return;
+        }
+        
+        const token = req.headers['authorization'];
+        let userId = null;
+        if (token) {
+            const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+            const tokenRecord = tokens.find(t => t.token === token);
+            if (tokenRecord) {
+                userId = tokenRecord.userId;
+            }
+        }
+        
+        const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+        const newOrder = {
+            id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
+            productId: product.id,
+            productName: product.name,
+            price: product.price,
+            buyerName,
+            email,
+            phone,
+            userId: userId,
+            status: 'pending',
+            downloadLinks: [],
+            panLink: '',
+            panPassword: '',
+            createdAt: new Date().toISOString(),
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        };
+        
+        orders.push(newOrder);
+        fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+        
+        res.status(200).json({
+            success: true,
+            message: '订单已创建，请完成支付',
+            order: newOrder,
+            paymentInfo: {
+                wechat: 'li28430132',
+                phone: '16627878630'
+            }
+        });
+        return;
     }
     
-    orders[index].status = 'cancelled';
-    
-    fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
-    
-    res.json({
-        success: true,
-        message: '订单已取消',
-        order: orders[index]
-    });
-});
-
-app.get('/api/orders', (req, res) => {
-    const email = req.query.email;
-    const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
-    const user = checkUser(req);
-    
-    if (!user) {
-        return res.status(403).json({ message: '需要登录' });
+    if (req.method === 'PUT' && req.url.match(/\/api\/orders\/\d+\/confirm/)) {
+        const token = req.headers['authorization'];
+        if (!token) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+        const tokenRecord = tokens.find(t => t.token === token);
+        if (!tokenRecord) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        const admin = users.find(u => u.id === tokenRecord.userId && u.role === 'admin');
+        if (!admin) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const orderId = parseInt(req.url.match(/\/api\/orders\/(\d+)\/confirm/)[1]);
+        const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+        const index = orders.findIndex(o => o.id === orderId);
+        
+        if (index === -1) {
+            res.status(404).json({ success: false, message: '订单不存在' });
+            return;
+        }
+        
+        const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
+        const product = products.find(p => p.id === orders[index].productId);
+        
+        if (!product) {
+            res.status(404).json({ success: false, message: '商品不存在' });
+            return;
+        }
+        
+        orders[index].status = 'completed';
+        orders[index].downloadLinks = product.files;
+        orders[index].panLink = product.panLink || '';
+        orders[index].panPassword = product.panPassword || '';
+        
+        fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+        
+        product.downloads += 1;
+        fs.writeFileSync(digitalProductsFilePath, JSON.stringify(products, null, 2));
+        
+        res.status(200).json({
+            success: true,
+            message: '订单已确认，下载链接已激活',
+            order: orders[index]
+        });
+        return;
     }
     
-    if (user.role === 'admin') {
-        res.json(orders);
-    } else {
-        const userOrders = orders.filter(o => 
-            o.email === email || 
-            (o.userId !== undefined && o.userId !== null && o.userId === user.id) ||
-            (o.userId === undefined && o.email === (user.username + '@example.com'))
-        );
-        res.json(userOrders);
+    if (req.method === 'PUT' && req.url.match(/\/api\/orders\/\d+\/cancel/)) {
+        const token = req.headers['authorization'];
+        if (!token) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+        const tokenRecord = tokens.find(t => t.token === token);
+        if (!tokenRecord) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        const admin = users.find(u => u.id === tokenRecord.userId && u.role === 'admin');
+        if (!admin) {
+            res.status(403).json({ success: false, message: '需要管理员权限' });
+            return;
+        }
+        
+        const orderId = parseInt(req.url.match(/\/api\/orders\/(\d+)\/cancel/)[1]);
+        const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+        const index = orders.findIndex(o => o.id === orderId);
+        
+        if (index === -1) {
+            res.status(404).json({ success: false, message: '订单不存在' });
+            return;
+        }
+        
+        orders[index].status = 'cancelled';
+        
+        fs.writeFileSync(ordersFilePath, JSON.stringify(orders, null, 2));
+        
+        res.status(200).json({
+            success: true,
+            message: '订单已取消',
+            order: orders[index]
+        });
+        return;
     }
-});
-
-app.get('/api/digital-categories', (req, res) => {
-    res.json([
-        { id: 'all', name: '全部', icon: 'fa-box' },
-        { id: 'code', name: '源码代码', icon: 'fa-code' },
-        { id: 'docs', name: '文档资料', icon: 'fa-file-pdf' },
-        { id: 'project', name: '项目实战', icon: 'fa-folder-open' }
-    ]);
-});
-
-module.exports = app;
+    
+    if (req.method === 'GET' && req.url === '/api/orders') {
+        const token = req.headers['authorization'];
+        if (!token) {
+            res.status(403).json({ message: '需要登录' });
+            return;
+        }
+        
+        const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+        const tokenRecord = tokens.find(t => t.token === token);
+        if (!tokenRecord) {
+            res.status(403).json({ message: '需要登录' });
+            return;
+        }
+        
+        const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+        const user = users.find(u => u.id === tokenRecord.userId);
+        if (!user) {
+            res.status(403).json({ message: '需要登录' });
+            return;
+        }
+        
+        const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+        
+        if (user.role === 'admin') {
+            res.status(200).json(orders);
+        } else {
+            const url = new URL(req.url, 'http://localhost');
+            const email = url.searchParams.get('email');
+            const userOrders = orders.filter(o => 
+                o.email === email || 
+                (o.userId !== undefined && o.userId !== null && o.userId === user.id) ||
+                (o.userId === undefined && o.email === (user.username + '@example.com'))
+            );
+            res.status(200).json(userOrders);
+        }
+        return;
+    }
+    
+    if (req.method === 'POST' && req.url === '/api/messages') {
+        const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
+        const newMessage = {
+            id: messages.length > 0 ? Math.max(...messages.map(m => m.id)) + 1 : 1,
+            name: req.body.name,
+            email: req.body.email,
+            phone: req.body.phone,
+            content: req.body.content,
+            createdAt: new Date().toISOString(),
+            replied: false,
+            reply: ''
+        };
+        
+        messages.push(newMessage);
+        fs.writeFileSync(messagesFilePath, JSON.stringify(messages, null, 2));
+        res.status(201).json({ success: true, message: '留言成功！我会尽快回复您', data: newMessage });
+        return;
+    }
+    
+    if (req.method === 'GET' && req.url === '/api/messages') {
+        const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
+        res.status(200).json({
+            data: messages,
+            total: messages.length,
+            page: 1,
+            totalPages: 1
+        });
+        return;
+    }
+    
+    if (req.method === 'GET' && req.url === '/api/contact') {
+        res.status(200).json({
+            phone: '16627878630',
+            qq: '2249144723',
+            wechat: 'li28430132',
+            address: '江苏 常州',
+            workTime: '9:00-18:00（周一到周六）'
+        });
+        return;
+    }
+    
+    if (req.method === 'GET' && req.url === '/api/stats') {
+        const products = JSON.parse(fs.readFileSync(productsFilePath, 'utf8'));
+        const messages = JSON.parse(fs.readFileSync(messagesFilePath, 'utf8'));
+        
+        const totalSold = products.reduce((sum, p) => sum + p.sold, 0);
+        const totalStock = products.reduce((sum, p) => sum + p.stock, 0);
+        
+        res.status(200).json({
+            years: 3,
+            videos: 100,
+            students: 5000,
+            projects: 50,
+            totalProducts: products.length,
+            totalSold,
+            totalStock,
+            pendingMessages: messages.filter(m => !m.replied).length,
+            totalMessages: messages.length
+        });
+        return;
+    }
+    
+    if (req.method === 'GET' && req.url === '/api/categories') {
+        res.status(200).json([
+            { id: 'all', name: '全部商品', icon: 'fa-box' },
+            { id: 'development', name: '开发板', icon: 'fa-microchip' },
+            { id: 'sensor', name: '传感器', icon: 'fa-thermometer-half' },
+            { id: 'display', name: '显示屏', icon: 'fa-monitor' },
+            { id: 'kit', name: '学习套件', icon: 'fa-box-open' },
+            { id: 'actuator', name: '执行器', icon: 'fa-cog' }
+        ]);
+        return;
+    }
+    
+    if (req.method === 'GET' && req.url === '/api/digital-categories') {
+        res.status(200).json([
+            { id: 'all', name: '全部', icon: 'fa-box' },
+            { id: 'code', name: '源码代码', icon: 'fa-code' },
+            { id: 'docs', name: '文档资料', icon: 'fa-file-pdf' },
+            { id: 'project', name: '项目实战', icon: 'fa-folder-open' }
+        ]);
+        return;
+    }
+    
+    const fs = require('fs');
+    const path = require('path');
+    
+    let filePath = '.' + req.url;
+    if (filePath === './') {
+        filePath = './index.html';
+    }
+    
+    try {
+        const content = fs.readFileSync(path.join(__dirname, '..', filePath), 'utf8');
+        const ext = path.extname(filePath);
+        
+        let contentType = 'text/html';
+        if (ext === '.css') contentType = 'text/css';
+        if (ext === '.js') contentType = 'text/javascript';
+        if (ext === '.json') contentType = 'application/json';
+        if (ext === '.png') contentType = 'image/png';
+        if (ext === '.jpg' || ext === '.jpeg') contentType = 'image/jpeg';
+        if (ext === '.svg') contentType = 'image/svg+xml';
+        
+        res.setHeader('Content-Type', contentType);
+        res.status(200).send(content);
+    } catch (err) {
+        res.status(404).send('Not Found');
+    }
+};
