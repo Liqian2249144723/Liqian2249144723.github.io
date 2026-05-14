@@ -1305,6 +1305,12 @@ body.light-theme .link-card:hover {
         padding: 0 15px;
     }
 
+    .nav-logo span {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+
     .hero-text h1 {
         font-size: 28px;
     }
