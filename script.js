@@ -1,4 +1,4 @@
-const BASE_URL = window.location.protocol === 'file:' ? 'http://localhost:3001' : '';
+const BASE_URL = 'http://你的腾讯云服务器IP:3001';
 
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
