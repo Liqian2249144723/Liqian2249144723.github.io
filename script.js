@@ -1,4 +1,4 @@
-const BASE_URL = 'http://你的腾讯云服务器IP:3001';
+const BASE_URL = 'https://yuanxing-workshop.onrender.com';
 
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
