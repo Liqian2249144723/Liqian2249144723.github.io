@@ -1004,7 +1004,40 @@
             return token ? { 'Authorization': token, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
+        async function wakeUpServer() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.innerHTML = `
+                <div style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(30, 30, 40, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">⏰</div>
+                    <div style="color: #fff; font-size: 20px; text-align: center;">
+                        <div>正在唤醒后端服务...</div>
+                        <div style="font-size: 14px; color: #888; margin-top: 10px;">这可能需要几秒钟...</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(loadingDiv);
+
+            try {
+                const response = await fetch(`${BASE_URL}/api/products`, { method: 'GET' });
+                if (response.ok) {
+                    loadingDiv.remove();
+                    return true;
+                }
+            } catch (error) {
+                console.log('第一次尝试失败，重试中...');
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                const response = await fetch(`${BASE_URL}/api/products`, { method: 'GET' });
+                if (response.ok) {
+                    loadingDiv.remove();
+                    return true;
+                }
+            }
+            loadingDiv.remove();
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await wakeUpServer();
             checkLogin();
         });
 
