@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -263,6 +263,28 @@ app.post('/api/login', (req, res) => {
         res.json({ success: false, message: '用户名或密码错误' });
     }
 });
+
+function checkUser(req, res) {
+    const token = req.headers['authorization'] || req.query.token;
+    if (!token) {
+        return null;
+    }
+    
+    const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
+    const tokenRecord = tokens.find(t => t.token === token);
+    
+    if (!tokenRecord) {
+        return null;
+    }
+    
+    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+    const user = users.find(u => u.id === tokenRecord.userId);
+    
+    if (user) {
+        return user;
+    }
+    return null;
+}
 
 function generateToken() {
     return Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -621,6 +643,9 @@ app.post('/api/orders', (req, res) => {
         return res.status(404).json({ success: false, message: '商品不存在' });
     }
     
+    const user = checkUser(req, res);
+    const userId = user ? user.id : null;
+    
     const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
     const newOrder = {
         id: orders.length > 0 ? Math.max(...orders.map(o => o.id)) + 1 : 1,
@@ -630,6 +655,7 @@ app.post('/api/orders', (req, res) => {
         buyerName,
         email,
         phone,
+        userId: userId,
         status: 'pending',
         downloadLinks: [],
         panLink: '',
@@ -716,16 +742,17 @@ app.put('/api/orders/:id/cancel', (req, res) => {
 app.get('/api/orders', (req, res) => {
     const email = req.query.email;
     const orders = JSON.parse(fs.readFileSync(ordersFilePath, 'utf8'));
+    const user = checkUser(req, res);
     
-    if (email) {
-        const userOrders = orders.filter(o => o.email === email);
-        res.json(userOrders);
-    } else {
-        const admin = checkAdmin(req, res);
-        if (!admin) {
-            return res.status(403).json({ message: '需要管理员权限' });
-        }
+    if (!user) {
+        return res.status(403).json({ message: '需要登录' });
+    }
+    
+    if (user.role === 'admin') {
         res.json(orders);
+    } else {
+        const userOrders = orders.filter(o => o.email === email || (!email && o.userId === user.id));
+        res.json(userOrders);
     }
 });
 

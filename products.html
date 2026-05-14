@@ -632,7 +632,7 @@
                         <div class="payment-account">
                             <p><i class="fas fa-user"></i> 收款人：小李</p>
                             <p><i class="fab fa-weixin"></i> 微信：<span class="copyable" onclick="copyText('li28430132')">li28430132</span></p>
-                            <p><i class="fab fa-alipay"></i> 支付宝：<span class="copyable" onclick="copyText('2249144723@qq.com')">2249144723@qq.com</span></p>
+                            <p><i class="fab fa-alipay"></i> 支付宝：<span class="copyable" onclick="copyText('16627878630')">16627878630</span></p>
                             <p><i class="fas fa-phone"></i> 电话：<span class="copyable" onclick="copyText('16627878630')">16627878630</span></p>
                         </div>
                     </div>
@@ -714,9 +714,22 @@
     </footer>
 
     <script>
-        const API_BASE = 'http://localhost:3001/api';
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3001/api' : '/api';
         let currentCategory = 'all';
         let currentKeyword = '';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('adminToken');
+            const user = localStorage.getItem('adminUser');
+            
+            if (!token || !user) {
+                alert('请先登录账号后再购买！');
+                window.location.href = 'admin.html';
+                return;
+            }
+            
+            loadProducts();
+        });
 
         async function loadProducts() {
             try {
@@ -787,16 +800,27 @@
         let currentEmail = '';
 
         async function openBuyModal(productId) {
+            const token = localStorage.getItem('adminToken');
+            const user = localStorage.getItem('adminUser');
+            
+            if (!token || !user) {
+                alert('请先登录账号后再购买！');
+                window.location.href = 'admin.html';
+                return;
+            }
+            
             try {
                 const response = await fetch(`${API_BASE}/digital-products/${productId}`);
                 const product = await response.json();
+                
+                const userData = JSON.parse(user);
                 
                 document.getElementById('productId').value = product.id;
                 document.getElementById('productName').value = product.name;
                 document.getElementById('productPrice').value = `¥${product.price}`;
                 document.getElementById('paymentAmount').textContent = `¥${product.price}`;
-                document.getElementById('buyerName').value = '';
-                document.getElementById('buyerEmail').value = '';
+                document.getElementById('buyerName').value = userData.username;
+                document.getElementById('buyerEmail').value = userData.username + '@example.com';
                 document.getElementById('buyerPhone').value = '';
                 
                 document.getElementById('successMessage').style.display = 'none';
@@ -856,6 +880,7 @@
         });
 
         async function confirmPayment() {
+            const token = localStorage.getItem('adminToken');
             const formData = {
                 productId: document.getElementById('productId').value,
                 email: document.getElementById('buyerEmail').value,
@@ -867,7 +892,8 @@
                 const response = await fetch(`${API_BASE}/orders`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': token
                     },
                     body: JSON.stringify(formData)
                 });
@@ -894,8 +920,14 @@
         async function checkOrderStatus() {
             if (!currentEmail) return;
             
+            const token = localStorage.getItem('adminToken');
+            
             try {
-                const response = await fetch(`${API_BASE}/orders?email=${encodeURIComponent(currentEmail)}`);
+                const response = await fetch(`${API_BASE}/orders?email=${encodeURIComponent(currentEmail)}`, {
+                    headers: {
+                        'Authorization': token
+                    }
+                });
                 const orders = await response.json();
                 
                 const order = orders.find(o => o.id === currentOrderId);
