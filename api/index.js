@@ -61,7 +61,7 @@ module.exports = async (req, res) => {
             return;
         }
         
-        if (req.url.startsWith('/css/')) {
+        if (req.url.startsWith('/css/') || req.url.endsWith('.css')) {
             const content = fs.readFileSync(path.join(__dirname, '..', req.url), 'utf8');
             res.setHeader('Content-Type', 'text/css');
             res.status(200).send(content);
@@ -75,6 +75,13 @@ module.exports = async (req, res) => {
             if (ext === '.svg') contentType = 'image/svg+xml';
             const content = fs.readFileSync(path.join(__dirname, '..', req.url));
             res.setHeader('Content-Type', contentType);
+            res.status(200).send(content);
+            return;
+        }
+        
+        if (req.url.endsWith('.js')) {
+            const content = fs.readFileSync(path.join(__dirname, '..', req.url), 'utf8');
+            res.setHeader('Content-Type', 'text/javascript');
             res.status(200).send(content);
             return;
         }
