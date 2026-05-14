@@ -166,10 +166,18 @@ if (!fs.existsSync(usersFilePath)) {
     fs.writeFileSync(usersFilePath, JSON.stringify([
         {
             id: 1,
-            username: 'admin',
-            password: 'admin123',
-            email: 'admin@example.com',
+            username: '2249144723',
+            password: 'liqian666',
+            email: '2249144723@qq.com',
             role: 'admin',
+            createdAt: '2024-01-01T00:00:00.000Z'
+        },
+        {
+            id: 2,
+            username: '123456',
+            password: 'liqian666',
+            email: '123456@example.com',
+            role: 'user',
             createdAt: '2024-01-01T00:00:00.000Z'
         }
     ], null, 2));
