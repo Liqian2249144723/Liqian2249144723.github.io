@@ -769,7 +769,9 @@ app.get('/api/orders', (req, res) => {
         res.json(orders);
     } else {
         const userOrders = orders.filter(o => {
-            if (o.userId && o.userId === user.id) return true;
+            if (o.userId !== undefined && o.userId !== null) {
+                if (parseInt(o.userId) === parseInt(user.id)) return true;
+            }
             if (o.email && o.email.toLowerCase() === (user.email || '').toLowerCase()) return true;
             if (o.email && o.email.toLowerCase() === user.username.toLowerCase()) return true;
             return false;
