@@ -586,17 +586,84 @@
 
         @media (max-width: 900px) {
             .admin-sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
+                width: 280px;
+                height: 100vh;
+                position: fixed;
+                left: -280px;
+                z-index: 2000;
+                transition: left 0.3s ease;
+            }
+
+            .admin-sidebar.active {
+                left: 0;
             }
 
             .admin-main {
                 margin-left: 0;
+                padding: 15px;
             }
 
             .dashboard-cards {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                width: 45px;
+                height: 45px;
+                border-radius: 10px;
+                background: rgba(0, 217, 255, 0.2);
+                border: 1px solid rgba(0, 217, 255, 0.3);
+                color: #00d9ff;
+                font-size: 20px;
+                cursor: pointer;
+                z-index: 3000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+            }
+
+            .mobile-menu-toggle:hover {
+                background: rgba(0, 217, 255, 0.3);
+            }
+
+            .admin-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 1500;
+            }
+
+            .admin-overlay.active {
+                display: block;
+            }
+
+            .admin-header {
+                padding-top: 60px;
+            }
+
+            .table {
+                font-size: 12px;
+            }
+
+            .table th, .table td {
+                padding: 8px 5px;
+            }
+
+            .btn-action {
+                padding: 6px 12px;
+                font-size: 12px;
+                min-width: 70px;
+                margin-right: 4px;
+                margin-bottom: 4px;
             }
         }
     </style>
@@ -657,6 +724,10 @@
     </div>
 
     <div id="adminPanel" style="display: none;">
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="admin-overlay" id="adminOverlay" onclick="toggleMobileMenu()"></div>
         <div class="admin-container">
             <aside class="admin-sidebar">
                 <div class="logo">
@@ -993,7 +1064,7 @@
     </div>
 
     <script>
-        const BASE_URL = 'https://liqian2249144723-github-io.onrender.com';
+        const BASE_URL = '';
 
         let currentPage = 'dashboard';
         let editingProduct = null;
@@ -1165,6 +1236,13 @@
             localStorage.removeItem('adminToken');
             document.getElementById('adminPanel').style.display = 'none';
             document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        function toggleMobileMenu() {
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.getElementById('adminOverlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
         function showPage(page) {
@@ -1652,10 +1730,27 @@
         async function loadOrders() {
             const keyword = document.getElementById('orderSearch').value;
             
+            console.log('=== 订单查询调试 ===');
+            console.log('BASE_URL:', BASE_URL);
+            console.log('Authorization:', localStorage.getItem('adminToken'));
+            console.log('当前用户:', localStorage.getItem('adminUser'));
+            
             const response = await fetch(`${BASE_URL}/api/orders`, {
                 headers: getAuthHeaders()
             });
+            
+            console.log('响应状态:', response.status);
+            
+            if (!response.ok) {
+                console.error('请求失败:', response.statusText);
+                const tbody = document.querySelector('#ordersTable tbody');
+                tbody.innerHTML = '<tr><td colspan="8" class="no-data">请求失败，请检查网络连接或重新登录</td></tr>';
+                return;
+            }
+            
             let orders = await response.json();
+            console.log('获取到的订单数量:', orders.length);
+            console.log('订单数据:', orders);
 
             if (keyword) {
                 const kw = keyword.toLowerCase();

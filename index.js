@@ -11,7 +11,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(__dirname));
 
 const dataDir = path.join(__dirname, 'data');
 if (!fs.existsSync(dataDir)) {

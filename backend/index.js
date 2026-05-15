@@ -267,7 +267,7 @@ app.post('/api/login', (req, res) => {
         res.json({ 
             success: true, 
             message: '登录成功',
-            user: { id: user.id, username: user.username, role: user.role },
+            user: { id: user.id, username: user.username, email: user.email, role: user.role },
             token: token
         });
     } else {
