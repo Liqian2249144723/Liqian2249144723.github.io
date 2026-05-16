@@ -1728,6 +1728,7 @@
         }
 
         async function loadOrders() {
+            try {
             const keyword = document.getElementById('orderSearch').value;
             
             console.log('=== 订单查询调试 ===');
@@ -1852,6 +1853,11 @@
                 `;
                 tbody.appendChild(row);
             });
+            } catch(e) {
+                console.error('loadOrders出错:', e);
+                const tbody = document.querySelector('#ordersTable tbody');
+                if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:red;">加载订单出错: ${e.message}</td></tr>`;
+            }
         }
 
         function getOrderStatusBadge(status) {
