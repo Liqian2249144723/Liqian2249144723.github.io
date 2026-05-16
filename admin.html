@@ -1793,7 +1793,7 @@
 
             orders.forEach(order => {
                 const row = document.createElement('tr');
-                row.classList.add(order.status === 'pending' ? 'pending-row' : '');
+                if (order.status === 'pending') row.classList.add('pending-row');
                 
                 let downloadInfo = '';
                 if (order.status === 'completed') {
