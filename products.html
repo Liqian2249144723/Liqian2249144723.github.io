@@ -112,96 +112,101 @@
         }
 
         .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .product-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px 18px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .product-card:hover {
-            transform: translateY(-8px);
             border-color: #00d9ff;
-            box-shadow: 0 20px 50px rgba(0, 217, 255, 0.15);
+            background: rgba(0, 217, 255, 0.06);
         }
 
-        .product-image {
-            height: 180px;
-            background: linear-gradient(135deg, #00d9ff22, #00ff8822);
+        .product-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 10px;
+            background: rgba(0, 217, 255, 0.12);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 45px;
+            font-size: 20px;
             color: #00d9ff;
-            position: relative;
         }
 
         .product-category {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 4px 12px;
-            background: rgba(0, 217, 255, 0.2);
-            border-radius: 15px;
-            font-size: 12px;
+            padding: 3px 10px;
+            background: rgba(0, 217, 255, 0.15);
+            border-radius: 12px;
+            font-size: 11px;
             color: #00d9ff;
+            white-space: nowrap;
         }
 
         .product-info {
-            padding: 20px;
+            flex: 1;
+            min-width: 0;
         }
 
         .product-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            margin-bottom: 10px;
             color: #fff;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .product-desc {
-            font-size: 14px;
+            font-size: 13px;
             color: #888;
-            line-height: 1.6;
-            margin-bottom: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .product-footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 15px;
+            white-space: nowrap;
         }
 
         .product-price {
             display: flex;
             align-items: baseline;
-            gap: 8px;
+            gap: 6px;
         }
 
         .price-current {
-            font-size: 24px;
+            font-size: 18px;
             font-weight: 700;
-            background: linear-gradient(135deg, #ff6b6b, #ffa502);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: #ffa502;
         }
 
         .price-original {
-            font-size: 14px;
+            font-size: 12px;
             color: #666;
             text-decoration: line-through;
         }
 
         .download-count {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
+            font-size: 11px;
+            color: #555;
+            margin-top: 2px;
         }
 
         .buy-btn {
@@ -951,25 +956,19 @@
             }
 
             grid.innerHTML = products.map(product => `
-                <div class="product-card">
-                    <div class="product-image">
+                <div class="product-card" onclick="openBuyModal(${product.id})">
+                    <div class="product-icon">
                         <i class="fas fa-file-code"></i>
-                        <span class="product-category">${getCategoryName(product.category)}</span>
                     </div>
                     <div class="product-info">
-                        <h3 class="product-title">${product.name}</h3>
-                        <p class="product-desc">${product.description}</p>
-                        <div class="product-footer">
-                            <div>
-                                <div class="product-price">
-                                    <span class="price-current">¥${product.price}</span>
-                                    <span class="price-original">¥${product.originalPrice}</span>
-                                </div>
-                                <div class="download-count">已下载 ${product.downloads} 次</div>
-                            </div>
-                            <button class="buy-btn" onclick="openBuyModal(${product.id})">
-                                <i class="fas fa-shopping-cart"></i> 购买
-                            </button>
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-desc">${product.description}</div>
+                    </div>
+                    <span class="product-category">${getCategoryName(product.category)}</span>
+                    <div class="product-footer">
+                        <div class="product-price">
+                            <span class="price-current">¥${product.price}</span>
+                            <span class="price-original">¥${product.originalPrice}</span>
                         </div>
                     </div>
                 </div>
