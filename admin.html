@@ -1735,7 +1735,15 @@
             console.log('Authorization:', localStorage.getItem('adminToken'));
             console.log('当前用户:', localStorage.getItem('adminUser'));
             
-            const response = await fetch(`${BASE_URL}/api/orders`, {
+            let apiUrl = `${BASE_URL}/api/orders`;
+            if (currentUserRole !== 'admin') {
+                const savedUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+                if (savedUser.email) {
+                    apiUrl += `?email=${encodeURIComponent(savedUser.email)}`;
+                }
+            }
+            
+            const response = await fetch(apiUrl, {
                 headers: getAuthHeaders()
             });
             

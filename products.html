@@ -1092,6 +1092,8 @@
                 
                 if (result.success) {
                     currentOrderId = result.order.id;
+                    localStorage.setItem('lastOrderId', currentOrderId);
+                    localStorage.setItem('lastOrderEmail', currentEmail);
                     document.getElementById('orderNumber').textContent = currentOrderId;
                     document.getElementById('paymentSection').style.display = 'none';
                     document.getElementById('pendingSection').style.display = 'block';
@@ -1108,7 +1110,14 @@
         }
 
         async function checkOrderStatus() {
-            if (!currentEmail) return;
+            if (!currentEmail) {
+                currentEmail = localStorage.getItem('lastOrderEmail');
+                if (!currentEmail) return;
+            }
+            if (!currentOrderId) {
+                currentOrderId = parseInt(localStorage.getItem('lastOrderId'));
+                if (!currentOrderId) return;
+            }
             
             const token = localStorage.getItem('adminToken');
             
@@ -1118,7 +1127,21 @@
                         'Authorization': token
                     }
                 });
-                const orders = await response.json();
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('服务器返回错误:', response.status, errorText);
+                    alert('查询订单失败: ' + response.status + ' - 请先登录后再查询');
+                    return;
+                }
+                
+                const data = await response.json();
+                if (!Array.isArray(data)) {
+                    console.error('返回数据不是数组:', data);
+                    alert('查询订单失败，返回数据格式错误');
+                    return;
+                }
+                const orders = data;
                 
                 const order = orders.find(o => o.id === currentOrderId);
                 
@@ -1158,10 +1181,17 @@
                         alert('订单已被取消，请重新购买');
                         document.getElementById('pendingSection').style.display = 'none';
                         document.getElementById('buyForm').style.display = 'block';
+                    } else if (order.status === 'pending') {
+                        document.getElementById('pendingSection').style.display = 'block';
+                        document.getElementById('successMessage').style.display = 'none';
+                        document.getElementById('downloadSection').style.display = 'none';
                     }
+                } else {
+                    alert('未找到订单，请确认邮箱地址是否正确');
                 }
             } catch (error) {
                 console.error('检查订单状态失败:', error);
+                alert('网络错误，请检查网络连接后重试');
             }
         }
 

@@ -760,14 +760,23 @@ app.get('/api/orders', (req, res) => {
     console.log('当前用户:', user ? `ID:${user.id}, 用户名:${user.username}, 角色:${user.role}` : '未登录');
     console.log('所有订单数量:', orders.length);
     
-    if (!user) {
-        return res.status(403).json({ message: '需要登录' });
+    // 管理员登录 → 返回所有订单
+    if (user && user.role === 'admin') {
+        console.log('管理员查询，返回所有订单');
+        return res.json(orders);
     }
     
-    if (user.role === 'admin') {
-        console.log('管理员查询，返回所有订单');
-        res.json(orders);
-    } else {
+    // 有邮箱参数 → 允许按邮箱查询（无需登录，方便普通用户在products.html查状态）
+    if (email) {
+        const matched = orders.filter(o => 
+            o.email && o.email.toLowerCase() === email.toLowerCase()
+        );
+        console.log('按邮箱查询，匹配到', matched.length, '个订单');
+        return res.json(matched);
+    }
+    
+    // 普通用户已登录 → 按userId/email/username匹配
+    if (user) {
         const userOrders = orders.filter(o => {
             if (o.userId !== undefined && o.userId !== null) {
                 if (parseInt(o.userId) === parseInt(user.id)) return true;
@@ -777,11 +786,11 @@ app.get('/api/orders', (req, res) => {
             return false;
         });
         console.log('普通用户查询，匹配到', userOrders.length, '个订单');
-        console.log('用户ID:', user.id);
-        console.log('查询email:', email);
-        console.log('用户邮箱:', user.username + '@example.com');
-        res.json(userOrders);
+        return res.json(userOrders);
     }
+    
+    // 没登录也没邮箱 → 拒绝
+    res.status(403).json({ message: '需要登录' });
 });
 
 app.get('/api/digital-categories', (req, res) => {
