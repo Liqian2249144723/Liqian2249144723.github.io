@@ -765,6 +765,12 @@
                             <span>订单管理</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="#users" class="nav-link" data-page="users">
+                            <i class="fas fa-users"></i>
+                            <span>用户管理</span>
+                        </a>
+                    </li>
                 </ul>
                 
                 <div class="logout-section">
@@ -916,6 +922,24 @@
                             </tr>
                         </thead>
                         <tbody></tbody>
+                    </table>
+                </div>
+
+                <div id="usersPage" style="display: none;">
+                    <div class="section-header">
+                        <h2>用户管理</h2>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>用户名</th>
+                                <th>邮箱</th>
+                                <th>角色</th>
+                                <th>注册时间</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody"></tbody>
                     </table>
                 </div>
             </main>
@@ -1261,6 +1285,7 @@
             document.getElementById('digitalPage').style.display = 'none';
             document.getElementById('userProductsPage').style.display = 'none';
             document.getElementById('ordersPage').style.display = 'none';
+            document.getElementById('usersPage').style.display = 'none';
 
             if (page === 'dashboard') {
                 document.getElementById('pageTitle').textContent = '数据概览';
@@ -1288,6 +1313,10 @@
                 document.getElementById('pageTitle').textContent = currentUserRole === 'admin' ? '订单管理' : '我的订单';
                 document.getElementById('ordersPage').style.display = 'block';
                 loadOrders();
+            } else if (page === 'users') {
+                document.getElementById('pageTitle').textContent = '用户管理';
+                document.getElementById('usersPage').style.display = 'block';
+                loadUsers();
             }
         }
 
@@ -1848,6 +1877,32 @@
                 console.error('loadOrders出错:', e);
                 const tbody = document.querySelector('#ordersTable tbody');
                 if (tbody) tbody.innerHTML = `<tr><td colspan="8" style="color:red;">加载订单出错: ${e.message}</td></tr>`;
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${BASE_URL}/api/users`, {
+                    headers: getAuthHeaders()
+                });
+                if (!response.ok) {
+                    document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5">加载失败</td></tr>';
+                    return;
+                }
+                const users = await response.json();
+                const tbody = document.getElementById('usersTableBody');
+                tbody.innerHTML = users.map(u => `
+                    <tr>
+                        <td>${u.id}</td>
+                        <td><strong>${u.username}</strong></td>
+                        <td>${u.email || '-'}</td>
+                        <td><span style="color: ${u.role === 'admin' ? '#00d9ff' : '#888'}">${u.role === 'admin' ? '管理员' : '用户'}</span></td>
+                        <td>${formatDate(u.createdAt)}</td>
+                    </tr>
+                `).join('');
+            } catch(e) {
+                console.error('加载用户失败:', e);
+                document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="5">加载出错</td></tr>';
             }
         }
 

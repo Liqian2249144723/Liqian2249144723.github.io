@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -253,12 +254,16 @@ if (!fs.existsSync(tokensFilePath)) {
     fs.writeFileSync(tokensFilePath, JSON.stringify([], null, 2));
 }
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
     const { username, password } = req.body;
     const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
-    const user = users.find(u => u.username === username && u.password === password);
+    const user = users.find(u => u.username === username);
     
     if (user) {
+        const valid = await bcrypt.compare(password, user.password);
+        if (!valid) {
+            return res.json({ success: false, message: '用户名或密码错误' });
+        }
         const token = generateToken();
         const tokens = JSON.parse(fs.readFileSync(tokensFilePath, 'utf8'));
         tokens.push({ token, userId: user.id, createdAt: new Date().toISOString() });
@@ -323,7 +328,7 @@ function checkAdmin(req, res) {
     return null;
 }
 
-app.post('/api/register', (req, res) => {
+app.post('/api/register', async (req, res) => {
     const { username, password, email } = req.body;
     const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
     
@@ -331,10 +336,12 @@ app.post('/api/register', (req, res) => {
         return res.json({ success: false, message: '用户名已存在' });
     }
     
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     const newUser = {
         id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
         username,
-        password,
+        password: hashedPassword,
         email,
         role: 'user',
         createdAt: new Date().toISOString()
@@ -579,6 +586,8 @@ app.get('/api/digital-products/:id', (req, res) => {
 });
 
 app.post('/api/digital-products', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) return res.status(403).json({ success: false, message: '需要管理员权限' });
     const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
     
     const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
@@ -603,6 +612,8 @@ app.post('/api/digital-products', (req, res) => {
 });
 
 app.put('/api/digital-products/:id', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) return res.status(403).json({ success: false, message: '需要管理员权限' });
     const { name, price, originalPrice, category, panLink, panPassword, downloads, isHot, description, files } = req.body;
     
     const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
@@ -632,6 +643,8 @@ app.put('/api/digital-products/:id', (req, res) => {
 });
 
 app.delete('/api/digital-products/:id', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) return res.status(403).json({ success: false, message: '需要管理员权限' });
     const products = JSON.parse(fs.readFileSync(digitalProductsFilePath, 'utf8'));
     const filtered = products.filter(p => p.id !== parseInt(req.params.id));
     
@@ -790,6 +803,20 @@ app.get('/api/orders', (req, res) => {
     
     // 没登录也没邮箱 → 拒绝
     res.status(403).json({ message: '需要登录' });
+});
+
+app.get('/api/users', (req, res) => {
+    const admin = checkAdmin(req, res);
+    if (!admin) return res.status(403).json({ success: false, message: '需要管理员权限' });
+    const users = JSON.parse(fs.readFileSync(usersFilePath, 'utf8'));
+    const safeUsers = users.map(u => ({
+        id: u.id,
+        username: u.username,
+        email: u.email,
+        role: u.role,
+        createdAt: u.createdAt
+    }));
+    res.json(safeUsers);
 });
 
 app.get('/api/digital-categories', (req, res) => {
