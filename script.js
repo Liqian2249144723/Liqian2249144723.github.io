@@ -1,4 +1,4 @@
-const BASE_URL = '';
+const BASE_URL = 'https://liqian2249144723-github-io.onrender.com';
 
 document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
