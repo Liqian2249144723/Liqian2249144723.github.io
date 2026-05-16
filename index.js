@@ -710,7 +710,6 @@ app.put('/api/orders/:id/confirm', (req, res) => {
     }
     
     orders[index].status = 'completed';
-    orders[index].downloadLinks = product.files;
     orders[index].panLink = product.panLink || '';
     orders[index].panPassword = product.panPassword || '';
     

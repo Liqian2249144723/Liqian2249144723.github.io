@@ -1169,13 +1169,7 @@
                             `;
                         }
                         
-                        const downloadLinks = order.downloadLinks.map(link => `
-                            <a href="${link.url}" target="_blank" class="download-link">
-                                <i class="fas fa-download"></i>
-                                <span>${link.name}</span>
-                            </a>
-                        `).join('');
-                        document.getElementById('downloadLinks').innerHTML = panInfo + downloadLinks;
+                        document.getElementById('downloadLinks').innerHTML = panInfo;
                         document.getElementById('downloadSection').style.display = 'block';
                     } else if (order.status === 'cancelled') {
                         alert('订单已被取消，请重新购买');
