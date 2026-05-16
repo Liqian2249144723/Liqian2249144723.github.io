@@ -1,0 +1,15 @@
+{
+  "name": "baidu-publish-tool",
+  "version": "1.0.0",
+  "description": "百度网盘批量上传工具 - 原形工坊",
+  "scripts": {
+    "auth": "node baidu-publish.js auth",
+    "publish": "node baidu-publish.js publish",
+    "refresh": "node baidu-publish.js refresh"
+  },
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "axios": "^1.7.0",
+    "form-data": "^4.0.0"
+  }
+}
