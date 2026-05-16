@@ -267,7 +267,7 @@ app.post('/api/login', (req, res) => {
         res.json({ 
             success: true, 
             message: '登录成功',
-            user: { id: user.id, username: user.username, role: user.role },
+            user: { id: user.id, username: user.username, email: user.email, role: user.role },
             token: token
         });
     } else {
@@ -768,11 +768,14 @@ app.get('/api/orders', (req, res) => {
         console.log('管理员查询，返回所有订单');
         res.json(orders);
     } else {
-        const userOrders = orders.filter(o => 
-            o.email === email || 
-            (o.userId !== undefined && o.userId !== null && o.userId === user.id) ||
-            (o.userId === undefined && o.email === (user.username + '@example.com'))
-        );
+        const userOrders = orders.filter(o => {
+            if (o.userId !== undefined && o.userId !== null) {
+                if (parseInt(o.userId) === parseInt(user.id)) return true;
+            }
+            if (o.email && o.email.toLowerCase() === (user.email || '').toLowerCase()) return true;
+            if (o.email && o.email.toLowerCase() === user.username.toLowerCase()) return true;
+            return false;
+        });
         console.log('普通用户查询，匹配到', userOrders.length, '个订单');
         console.log('用户ID:', user.id);
         console.log('查询email:', email);
