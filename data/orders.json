@@ -1,0 +1,289 @@
+[
+  {
+    "id": 1,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": null,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-15T11:31:20.629Z",
+    "expiresAt": "2026-05-22T11:31:20.629Z"
+  },
+  {
+    "id": 2,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "2249144723",
+    "email": "2249144723@example.com",
+    "phone": "",
+    "userId": 1,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:22:04.725Z",
+    "expiresAt": "2026-05-23T03:22:04.725Z"
+  },
+  {
+    "id": 3,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:22:25.757Z",
+    "expiresAt": "2026-05-23T03:22:25.757Z"
+  },
+  {
+    "id": 4,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:23:35.592Z",
+    "expiresAt": "2026-05-23T03:23:35.592Z"
+  },
+  {
+    "id": 5,
+    "productId": 2,
+    "productName": "STM32 HAL库开发指南 PDF",
+    "price": 9.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "STM32 HAL开发指南.pdf",
+        "url": "https://example.com/stm32-hal-guide.pdf"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:23:45.862Z",
+    "expiresAt": "2026-05-23T03:23:45.862Z"
+  },
+  {
+    "id": 6,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "测试用户",
+    "email": "newtest@example.com",
+    "phone": "13800000000",
+    "userId": null,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:29:29.456Z",
+    "expiresAt": "2026-05-23T03:29:29.456Z"
+  },
+  {
+    "id": 7,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:43:31.328Z",
+    "expiresAt": "2026-05-23T03:43:31.328Z"
+  },
+  {
+    "id": 8,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:44:25.751Z",
+    "expiresAt": "2026-05-23T03:44:25.751Z"
+  },
+  {
+    "id": 9,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:44:56.871Z",
+    "expiresAt": "2026-05-23T03:44:56.871Z"
+  },
+  {
+    "id": 10,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:50:15.129Z",
+    "expiresAt": "2026-05-23T03:50:15.129Z"
+  },
+  {
+    "id": 11,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 19.9,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      },
+      {
+        "name": "进阶例程.zip",
+        "url": "https://example.com/stm32-advanced.zip"
+      }
+    ],
+    "panLink": "",
+    "panPassword": "",
+    "createdAt": "2026-05-16T03:50:19.055Z",
+    "expiresAt": "2026-05-23T03:50:19.055Z"
+  },
+  {
+    "id": 12,
+    "productId": 1,
+    "productName": "STM32F103C8T6 完整例程代码",
+    "price": 20,
+    "buyerName": "123456",
+    "email": "123456@example.com",
+    "phone": "",
+    "userId": 2,
+    "status": "completed",
+    "downloadLinks": [],
+    "panLink": "https://pan.baidu.com/s/1odXQ0eCtBiYwUnrurBsRxw?pwd",
+    "panPassword": "yoyo ",
+    "createdAt": "2026-05-16T08:04:14.903Z",
+    "expiresAt": "2026-05-23T08:04:14.903Z"
+  }
+]

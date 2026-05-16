@@ -1,0 +1,71 @@
+[
+  {
+    "id": 1,
+    "name": "STM32F103C8T6 完整例程代码",
+    "price": 20,
+    "originalPrice": 30,
+    "description": "包含GPIO、定时器、串口、I2C、SPI等20+个例程，带详细注释",
+    "category": "code",
+    "downloads": 167,
+    "files": [
+      {
+        "name": "基础例程.zip",
+        "url": "https://example.com/stm32-basic.zip"
+      }
+    ],
+    "isHot": true,
+    "panLink": "https://pan.baidu.com/s/1odXQ0eCtBiYwUnrurBsRxw?pwd",
+    "panPassword": "yoyo "
+  },
+  {
+    "id": 2,
+    "name": "STM32 HAL库开发指南 PDF",
+    "price": 10,
+    "originalPrice": 20,
+    "description": "从零开始学习STM32 HAL库开发，附大量实战项目",
+    "category": "docs",
+    "downloads": 329,
+    "files": [
+      {
+        "name": "STM32 HAL开发指南.pdf",
+        "url": "https://example.com/stm32-hal-guide.pdf"
+      }
+    ],
+    "isHot": true,
+    "panLink": "https://pan.baidu.com/s/1odXQ0eCtBiYwUnrurBsRxw?pwd"
+  },
+  {
+    "id": 3,
+    "name": "物联网项目实战源码",
+    "price": 30,
+    "originalPrice": 50,
+    "description": "包含MQTT、HTTP、TCP等物联网通信项目源码",
+    "category": "project",
+    "downloads": 89,
+    "files": [
+      {
+        "name": "MQTT项目源码.zip",
+        "url": "https://example.com/mqtt-project.zip"
+      }
+    ],
+    "isHot": false,
+    "panLink": "https://pan.baidu.com/s/1odXQ0eCtBiYwUnrurBsRxw?pwd"
+  },
+  {
+    "id": 4,
+    "name": "毕业设计指导文档",
+    "price": 16,
+    "originalPrice": 26,
+    "description": "STM32毕业设计选题、开题报告、答辩PPT模板",
+    "category": "docs",
+    "downloads": 245,
+    "files": [
+      {
+        "name": "毕设指导文档.pdf",
+        "url": "https://example.com/thesis-guide.pdf"
+      }
+    ],
+    "isHot": true,
+    "panLink": "https://pan.baidu.com/s/1odXQ0eCtBiYwUnrurBsRxw?pwd"
+  }
+]

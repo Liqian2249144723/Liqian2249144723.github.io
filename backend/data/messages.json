@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "name": "????",
+    "email": "test@test.com",
+    "phone": "13800138000",
+    "content": "????????",
+    "createdAt": "2026-05-13T03:08:40.887Z"
+  },
+  {
+    "id": 2,
+    "name": "qian li",
+    "email": "2249144723@qq.com",
+    "phone": "16627878632",
+    "content": "是否是",
+    "createdAt": "2026-05-13T03:26:01.165Z",
+    "replied": false,
+    "reply": ""
+  },
+  {
+    "id": 3,
+    "name": "qian li",
+    "email": "2249144723@qq.com",
+    "phone": "16627878632",
+    "content": "违法",
+    "createdAt": "2026-05-13T03:26:11.311Z",
+    "replied": false,
+    "reply": ""
+  }
+]

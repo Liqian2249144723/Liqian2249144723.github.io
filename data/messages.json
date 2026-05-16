@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "张同学",
+    "email": "zhang@example.com",
+    "phone": "13800138001",
+    "content": "您好，请问STM32学习套件包含哪些传感器？",
+    "createdAt": "2024-01-15T10:30:00.000Z",
+    "replied": true,
+    "reply": "您好！套件包含：HC-SR04超声波、DS18B20温度、MQ-2烟雾、LED灯、继电器等10种传感器。"
+  },
+  {
+    "id": 2,
+    "name": "李同学",
+    "email": "li@example.com",
+    "phone": "13900139002",
+    "content": "想咨询毕业设计相关的服务，怎么收费？",
+    "createdAt": "2024-01-16T14:20:00.000Z",
+    "replied": true,
+    "reply": "您好！毕业设计服务根据难度收费，一般在500-2000元之间。具体可以添加微信详聊。"
+  }
+]

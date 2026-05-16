@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "name": "STM32F103C8T6开发板",
+    "price": 45,
+    "category": "development",
+    "description": "STM32F103C8T6最小系统板，核心板，学习板",
+    "image": "STM32F103",
+    "originalPrice": 55,
+    "stock": 3,
+    "isHot": true
+  },
+  {
+    "id": 2,
+    "name": "HC-SR04超声波模块",
+    "price": 12,
+    "category": "sensor",
+    "description": "超声波测距模块，支持2cm-400cm测距",
+    "image": "HC-SR04"
+  },
+  {
+    "id": 3,
+    "name": "OLED显示屏 0.96寸",
+    "price": 18,
+    "category": "display",
+    "description": "0.96寸OLED显示屏，128x64分辨率",
+    "image": "OLED"
+  },
+  {
+    "id": 4,
+    "name": "DS18B20温度传感器",
+    "price": 8,
+    "category": "sensor",
+    "description": "单总线温度传感器，-55°C~125°C",
+    "image": "DS18B20"
+  },
+  {
+    "id": 5,
+    "name": "STM32学习套件",
+    "price": 128,
+    "category": "kit",
+    "description": "包含STM32开发板+10种传感器+教程",
+    "image": "STM32-Kit"
+  },
+  {
+    "id": 6,
+    "name": "ESP32开发板",
+    "price": 35,
+    "category": "development",
+    "description": "ESP32-WROOM-32开发板，支持WiFi+蓝牙",
+    "image": "ESP32"
+  }
+]
